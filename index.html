@@ -4,23 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan de Suplementación Prenatal Personalizado</title>
-    <!-- Carga de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Carga de iconos Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Configuración de la fuente Inter y colores base */
         :root {
-            --color-primary: #52b788; /* Verde menta suave */
-            --color-secondary: #a8dadc; /* Azul pastel */
-            --color-accent: #fbc4c4; /* Rosa bebé */
-            --color-bg: #f8f8f8; /* Fondo claro */
-            --color-text: #2c3e50; /* Gris oscuro */
-            --color-water: #4fc3f7; /* Azul agua */
-            --color-cream: #ec4899; /* Rosa Malva */
+            --color-primary: #52b788; 
+            --color-secondary: #a8dadc;
+            --color-accent: #fbc4c4;
+            --color-bg: #f8f8f8;
+            --color-text: #2c3e50;
+            --color-water: #4fc3f7;
+            --color-cream: #ec4899;
         }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             background-color: var(--color-bg);
             color: var(--color-text);
         }
@@ -30,7 +27,6 @@
             border-bottom-left-radius: 40px;
             border-bottom-right-radius: 40px;
         }
-        /* Estilos de las tarjetas de suplementos */
         .pill-card {
             background-color: white;
             transition: all 0.2s;
@@ -38,7 +34,7 @@
             border-left: 5px solid var(--color-primary);
         }
         .checked-row {
-            background-color: #e6f7ee; /* Fondo muy suave cuando está marcado */
+            background-color: #e6f7ee;
             text-decoration: line-through;
             opacity: 0.7;
         }
@@ -57,15 +53,13 @@
             border-color: var(--color-primary);
             color: white;
         }
-
-        /* Estilos de la tarjeta de CREMA (Nueva) */
         .cream-card {
-            background-color: #fdf2f8; /* Rosa muy claro */
+            background-color: #fdf2f8;
             border-left: 5px solid var(--color-cream);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
         .checked-row-cream {
-            background-color: #fbc4c4; /* Rosa suave cuando está marcado */
+            background-color: #fbc4c4;
             text-decoration: line-through;
             opacity: 0.8;
         }
@@ -84,16 +78,14 @@
             border-color: var(--color-cream);
             color: white;
         }
-        
-        /* Estilos de la tarjeta de AGUA (Alarma) */
         .water-card-normal {
-            background-color: #e3f2fd; /* Azul suave */
+            background-color: #e3f2fd;
             border-left: 5px solid var(--color-water);
             transition: background-color 0.5s, border-left 0.5s;
         }
         .water-card-alert {
-            background-color: #fee2e2; /* Rojo suave de alerta */
-            border-left: 5px solid #ef4444; /* Rojo fuerte */
+            background-color: #fee2e2;
+            border-left: 5px solid #ef4444;
             animation: pulse-border 1s infinite alternate;
         }
         @keyframes pulse-border {
@@ -102,544 +94,295 @@
         }
     </style>
 </head>
-<body class="p-4">
+<body class="p-4 pb-20">
 
-    <!-- Encabezado Móvil (Banner) -->
+    <!-- Encabezado -->
     <div class="header-bg p-6 mb-8 text-white text-center rounded-xl shadow-lg">
         <div class="flex items-center justify-center space-x-2 mb-2">
             <i data-lucide="baby" class="w-8 h-8"></i>
             <h1 class="text-2xl font-bold">Mi Plan Prenatal</h1>
         </div>
-        <p class="text-sm opacity-90">Rutina diaria optimizada y segura. <span id="auth-status" class="font-semibold">Guardando...</span></p>
-        <p class="text-xs opacity-70 mt-1">ID: <span id="display-user-id">Cargando...</span></p>
+        <p class="text-sm opacity-90">Rutina diaria. <span id="auth-status" class="font-semibold bg-white/20 px-2 py-1 rounded">Conectando...</span></p>
     </div>
 
-    <!-- Contenedor Principal (Tarjetas) -->
     <div class="max-w-4xl mx-auto">
 
-        <!-- Sección de Hidratación -->
+        <!-- Hidratación -->
         <div id="hydration-card" class="mb-8 p-4 rounded-xl shadow-md water-card-normal">
             <h2 class="text-xl font-semibold mb-2 flex items-center text-blue-700">
                 <i data-lucide="droplet" class="w-5 h-5 mr-2"></i>
                 Recordatorio de Hidratación
             </h2>
-            
             <div id="hydration-status" class="text-center p-2 rounded-lg text-lg font-bold bg-blue-100 text-blue-700 mb-4">
-                0 / 9 tomas de agua completadas
+                Cargando...
             </div>
-
             <div id="hydration-action" class="flex flex-col items-center">
                 <p id="next-water-time" class="text-sm text-gray-600 mb-3"></p>
-                <button onclick="markWaterTaken()" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center bg-blue-500 hover:bg-blue-600 transition duration-150">
+                <button onclick="window.markWaterTaken()" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center bg-blue-500 hover:bg-blue-600 transition duration-150">
                     <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
-                    Marcar: 1 Vaso de Agua Tomado
+                    Marcar Vaso de Agua
                 </button>
             </div>
         </div>
         
-        <!-- Sección de Crema/Aceite Corporal (NUEVA) -->
+        <!-- Crema -->
         <div id="cream-tracker" class="mb-8 p-4 rounded-xl shadow-md cream-card">
             <h2 class="text-xl font-semibold mb-2 flex items-center text-pink-700">
                 <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i>
-                Cuidado de la Piel (Aceite/Crema)
+                Cuidado de la Piel
             </h2>
             <div id="creamProgressDisplay" class="text-center p-2 rounded-lg text-lg font-bold bg-gray-100 text-gray-700 mb-4">
-                0 / 3 aplicaciones completadas
+                Cargando...
             </div>
-            <div id="cream-list" class="space-y-2">
-                <!-- Las dosis de crema se inyectan aquí -->
-            </div>
+            <div id="cream-list" class="space-y-2"></div>
         </div>
 
-
-        <!-- Sección de Resumen y Contador de Suplementos -->
+        <!-- Resumen -->
         <div class="mb-6 p-4 bg-white rounded-xl shadow-md border-t-4 border-t-gray-200">
             <h2 class="text-xl font-semibold mb-2 flex items-center">
                 <i data-lucide="list-checks" class="w-5 h-5 mr-2 text-blue-500"></i>
-                Checklist Diario de Suplementos
+                Suplementos Diarios
             </h2>
-            <p class="text-sm text-gray-600 mb-3">Marca cada suplemento que tomas. Se guarda en la nube y se reinicia automáticamente mañana.</p>
             <div id="progressDisplay" class="text-center p-2 rounded-lg text-lg font-bold bg-gray-100 text-gray-700">
-                0 / 8 tomas completadas
+                Cargando...
             </div>
         </div>
 
-        <!-- Tabla de Suplementación por Comida -->
+        <!-- Tablas -->
         <div class="space-y-6">
-
-            <!-- BLOQUE 1: Ayunas -->
-            <div class="pill-card p-4 rounded-xl shadow-md" data-meal="Ayunas">
-                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700">
-                    <i data-lucide="sun-medium" class="w-5 h-5 mr-2 text-yellow-500"></i>
-                    🌅 Ayunas (Al despertar)
-                </h3>
-                <p class="text-sm italic text-gray-500 mb-3">Solo con agua para optimizar el paso al intestino.</p>
-                <div id="ayunas-list" class="space-y-2">
-                    <!-- Las pastillas se inyectan aquí -->
-                </div>
+            <div class="pill-card p-4 rounded-xl shadow-md">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700"><i data-lucide="sun-medium" class="w-5 h-5 mr-2 text-yellow-500"></i> Ayunas</h3>
+                <div id="ayunas-list" class="space-y-2"></div>
             </div>
 
-            <!-- BLOQUE 2: Desayuno -->
-            <div class="pill-card p-4 rounded-xl shadow-md" data-meal="Desayuno">
-                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700">
-                    <i data-lucide="egg-fried" class="w-5 h-5 mr-2 text-amber-600"></i>
-                    🍳 Desayuno (Carga Principal)
-                </h3>
-                <p class="text-sm italic text-gray-500 mb-3">Asegúrate de incluir una fuente de grasa (aguacate, aceite de oliva, huevo) para una mejor absorción.</p>
-                <div id="desayuno-list" class="space-y-2">
-                    <!-- Las pastillas se inyectan aquí -->
-                </div>
+            <div class="pill-card p-4 rounded-xl shadow-md">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700"><i data-lucide="egg-fried" class="w-5 h-5 mr-2 text-amber-600"></i> Desayuno</h3>
+                <div id="desayuno-list" class="space-y-2"></div>
             </div>
 
-            <!-- BLOQUE 3: Almuerzo -->
-            <div class="pill-card p-4 rounded-xl shadow-md" data-meal="Almuerzo">
-                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700">
-                    <i data-lucide="salad" class="w-5 h-5 mr-2 text-green-600"></i>
-                    🥗 Almuerzo
-                </h3>
-                <p class="text-sm italic text-gray-500 mb-3">Refuerzo a mitad del día para el cerebro y la energía.</p>
-                <div id="almuerzo-list" class="space-y-2">
-                    <!-- Las pastillas se inyectan aquí -->
-                </div>
+            <div class="pill-card p-4 rounded-xl shadow-md">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700"><i data-lucide="salad" class="w-5 h-5 mr-2 text-green-600"></i> Almuerzo</h3>
+                <div id="almuerzo-list" class="space-y-2"></div>
             </div>
 
-            <!-- BLOQUE 4: Cena -->
-            <div class="pill-card p-4 rounded-xl shadow-md" data-meal="Cena">
-                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700">
-                    <i data-lucide="moon" class="w-5 h-5 mr-2 text-indigo-500"></i>
-                    🌙 Cena (Descanso)
-                </h3>
-                <p class="text-sm italic text-gray-500 mb-3">La última toma para la reparación celular durante la noche.</p>
-                <div id="cena-list" class="space-y-2">
-                    <!-- Las pastillas se inyectan aquí -->
-                </div>
+            <div class="pill-card p-4 rounded-xl shadow-md">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700"><i data-lucide="moon" class="w-5 h-5 mr-2 text-indigo-500"></i> Cena</h3>
+                <div id="cena-list" class="space-y-2"></div>
             </div>
         </div>
 
-        <!-- Recomendaciones Clave -->
+        <!-- Recomendaciones -->
         <div class="mt-8 p-6 bg-white rounded-xl shadow-xl border-t-4 border-t-red-400">
-            <h2 class="text-xl font-bold mb-3 flex items-center text-red-600">
-                <i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i>
-                Recomendaciones Clave
-            </h2>
-            <ul class="space-y-3 text-sm list-disc pl-5">
-                <li><strong class="text-red-700">Vitamina D (El Ajuste):</strong> Tomar solo **1 o 2 gotas** de *Seeking Health D3+K2*. La caminata de las 5pm no produce Vitamina D. Si tomas sol al mediodía (10am-2pm) por 15 minutos sin bloqueador, **omite las gotas ese día**.</li>
-                <li><strong class="text-red-700">Hierro y Calcio:</strong> ¡Excelente noticia! Al no consumir lácteos, tu cuerpo absorberá el Hierro del *Prenatal* de forma óptima. Sigue tomándolo junto con las comidas.</li>
-                <li><strong class="text-red-700">Hidratación:</strong> Toma cada tanda de pastillas con un vaso completo de agua (250ml) para evitar molestias gástricas y mejorar la disolución.</li>
-                <li><strong class="text-red-700">Fosfatidilcolina (Thorne):</strong> La dosis de 1 cápsula es de apoyo. Si tu dieta es baja en huevos o carne, consulta a tu médico sobre subir a 2 cápsulas para asegurar los 450mg de Colina.</li>
+            <h2 class="text-xl font-bold mb-3 flex items-center text-red-600"><i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i> Notas Importantes</h2>
+            <ul class="space-y-3 text-sm list-disc pl-5 text-gray-700">
+                <li><strong>Vitamina D:</strong> Si tomaste sol 15 min al mediodía sin bloqueador, omite las gotas.</li>
+                <li><strong>Hierro:</strong> Se absorbe bien con el Prenatal (sin lácteos).</li>
+                <li><strong>Agua:</strong> Toma 250ml con cada tanda de pastillas.</li>
             </ul>
         </div>
-
     </div>
 
-    <!-- Scripts de Lógica JavaScript -->
     <script type="module">
-        // --- FIREBASE IMPORTS ---
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { 
-            getFirestore, doc, setDoc, onSnapshot, updateDoc, serverTimestamp, setLogLevel 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Habilitar logs para depuración
-        setLogLevel('Debug');
+        // --- CONFIGURACIÓN DE FIREBASE ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyCQ6mZFbPympKrLRPVyrANa-8B6NKWu9t8",
+          authDomain: "plan-prenatal-cc.firebaseapp.com",
+          projectId: "plan-prenatal-cc",
+          storageBucket: "plan-prenatal-cc.firebasestorage.app",
+          messagingSenderId: "1036192129718",
+          appId: "1:1036192129718:web:2adacd2e21a9e24a82bc17"
+        };
+        // -----------------------------------------------
 
-        // --- GLOBAL STATE & CONSTANTS ---
-        let db;
-        let auth;
-        let userId = 'loading'; 
-        let isAuthReady = false;
-        let appState = null; // Estado cargado de Firestore
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let userId = null;
+        let appState = null;
         const todayDate = new Date().toISOString().slice(0, 10);
-        const END_TIME_HOUR = 21; // 9 PM
-        let waterIntervalId = null;
-        let isWaterAlerting = false;
-
-        const INITIAL_FIRESTORE_DATA = {
-            supplements: { 
-                probiotic: false, le_1: false, dha_1: false, d3k2: false, 
-                le_2: false, choline: false, le_3: false, dha_2: false 
-            },
+        
+        const INITIAL_DATA = {
+            supplements: { probiotic: false, le_1: false, dha_1: false, d3k2: false, le_2: false, choline: false, le_3: false, dha_2: false },
             waterState: new Array(9).fill(false),
-            creamState: { cream_morning: false, cream_afternoon: false, cream_night: false },
+            creamState: { cream_morning: false, cream_afternoon: false, cream_night: false }
         };
 
         const plan = [
-            { id: 'probiotic', name: 'Probiótico (Garden of Life)', dose: '1 Cápsula', meal: 'ayunas' },
-            { id: 'le_1', name: 'Prenatal (Life Extension)', dose: '2 Cápsulas', meal: 'desayuno' },
-            { id: 'dha_1', name: 'DHA (Nordic Naturals)', dose: '1 Cápsula', meal: 'desayuno' },
-            { id: 'd3k2', name: 'Vitamina D3+K2 (Seeking Health)', dose: '1 o 2 Gotas', meal: 'desayuno' },
-            { id: 'le_2', name: 'Prenatal (Life Extension)', dose: '1 Cápsula', meal: 'almuerzo' },
-            { id: 'choline', name: 'Fosfatidilcolina (Thorne)', dose: '1 Cápsula', meal: 'almuerzo' },
-            { id: 'le_3', name: 'Prenatal (Life Extension)', dose: '1 Cápsula', meal: 'cena' },
-            { id: 'dha_2', name: 'DHA (Nordic Naturals)', dose: '1 Cápsula', meal: 'cena' },
+            { id: 'probiotic', name: 'Probiótico', dose: '1 Cápsula', meal: 'ayunas' },
+            { id: 'le_1', name: 'Prenatal', dose: '2 Cápsulas', meal: 'desayuno' },
+            { id: 'dha_1', name: 'DHA', dose: '1 Cápsula', meal: 'desayuno' },
+            { id: 'd3k2', name: 'Vit D3+K2', dose: '1-2 Gotas', meal: 'desayuno' },
+            { id: 'le_2', name: 'Prenatal', dose: '1 Cápsula', meal: 'almuerzo' },
+            { id: 'choline', name: 'Fosfatidilcolina', dose: '1 Cápsula', meal: 'almuerzo' },
+            { id: 'le_3', name: 'Prenatal', dose: '1 Cápsula', meal: 'cena' },
+            { id: 'dha_2', name: 'DHA', dose: '1 Cápsula', meal: 'cena' },
         ];
-        const totalDoses = plan.length;
-        
+
         const creamTimes = [
-            { id: 'cream_morning', name: 'Mañana (09:00 AM)' },
-            { id: 'cream_afternoon', name: 'Tarde (03:00 PM)' },
-            { id: 'cream_night', name: 'Noche (09:00 PM)' },
-        ];
-        const waterTimes = [
-            "08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"
+            { id: 'cream_morning', name: 'Mañana (9 AM)' },
+            { id: 'cream_afternoon', name: 'Tarde (3 PM)' },
+            { id: 'cream_night', name: 'Noche (9 PM)' },
         ];
         
-        // --- FIREBASE CORE FUNCTIONS ---
+        const waterTimes = ["08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"];
 
-        async function initializeFirebase() {
-            try {
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-                const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                
-                document.getElementById('auth-status').textContent = 'Conectando...';
-
-                // Usamos onAuthStateChanged para manejar el estado de autenticación
-                onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        document.getElementById('display-user-id').textContent = userId;
-                        document.getElementById('auth-status').textContent = 'Guardado en la Nube';
-                        isAuthReady = true;
-                        startTracking();
-                    } else {
-                         // Si no hay usuario, intenta iniciar sesión
-                        try {
-                            if (initialAuthToken) {
-                                await signInWithCustomToken(auth, initialAuthToken);
-                            } else {
-                                await signInAnonymously(auth);
-                            }
-                        } catch (e) {
-                            console.error("Error signing in:", e);
-                            document.getElementById('auth-status').textContent = 'Error de Autenticación';
-                            isAuthReady = true; // Permite el flujo sin datos si la auth falla totalmente
-                        }
-                    }
+        // 1. Autenticación y Carga de Datos
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userId = user.uid;
+                document.getElementById('auth-status').textContent = "Guardado en nube";
+                document.getElementById('auth-status').classList.add("text-green-200");
+                startSync();
+            } else {
+                signInAnonymously(auth).catch((error) => {
+                    console.error(error);
+                    document.getElementById('auth-status').textContent = "Error Auth";
                 });
-
-            } catch (error) {
-                console.error("Error al inicializar Firebase:", error);
-                document.getElementById('auth-status').textContent = 'Error de Configuración';
             }
-        }
+        });
 
-        function getTrackingDocRef() {
-            if (!db || !userId) return null;
-            // Path: /artifacts/{appId}/users/{userId}/dailyTracking/{todayDate}
-            return doc(db, `artifacts/${__app_id}/users/${userId}/dailyTracking/${todayDate}`);
-        }
-
-        async function updateFirestore(field, newValue) {
-            const docRef = getTrackingDocRef();
-            if (!docRef) {
-                console.error("Referencia de Firestore no disponible.");
-                return;
-            }
-            try {
-                await updateDoc(docRef, {
-                    [field]: newValue,
-                    lastUpdate: serverTimestamp(),
-                });
-            } catch (error) {
-                console.error(`Error al actualizar el campo ${field}:`, error);
-            }
-        }
-
-        // --- DATA LISTENER & INITIAL LOAD ---
-
-        function startTracking() {
-            if (!isAuthReady || !db || !userId) return;
-
-            const docRef = getTrackingDocRef();
+        function startSync() {
+            // Ruta simple: usuarios/ID/registros/FECHA
+            const docRef = doc(db, `users/${userId}/dailyTracking/${todayDate}`);
             
-            // Suscripción en tiempo real
-            onSnapshot(docRef, (docSnapshot) => {
-                if (docSnapshot.exists()) {
-                    const data = docSnapshot.data();
-                    // Usar los datos de Firestore
-                    appState = {
-                        supplements: data.supplements || INITIAL_FIRESTORE_DATA.supplements,
-                        waterState: data.waterState || INITIAL_FIRESTORE_DATA.waterState,
-                        creamState: data.creamState || INITIAL_FIRESTORE_DATA.creamState,
-                    };
+            onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    appState = docSnap.data();
                 } else {
-                    // Si el documento no existe (primer día), crearlo
-                    appState = INITIAL_FIRESTORE_DATA;
-                    setDoc(docRef, { 
-                        ...appState,
-                        lastUpdate: serverTimestamp(),
-                        userId: userId 
-                    }).catch(e => console.error("Error al crear el documento inicial:", e));
+                    appState = INITIAL_DATA;
+                    setDoc(docRef, { ...INITIAL_DATA, createdAt: serverTimestamp() });
                 }
-                
-                // Renderizar la UI con los nuevos datos
-                renderAllUI();
-                if (!waterIntervalId) {
-                    // Solo iniciar el intervalo una vez después de la carga inicial
-                    waterIntervalId = setInterval(checkHydrationStatus, 60000); 
-                    checkHydrationStatus(); 
-                }
-
-            }, (error) => {
-                console.error("Error al suscribirse a Firestore:", error);
-                document.getElementById('auth-status').textContent = 'Error de Sincronización';
+                renderAll();
             });
         }
-        
-        // --- RENDERING FUNCTIONS (Llamadas desde onSnapshot) ---
 
-        function renderAllUI() {
-            if (!appState) return;
-
-            renderSupplementTracker();
-            renderCreamTracker();
-            updateHydrationUI(); 
+        function updateDb(field, newData) {
+            if (!userId || !appState) return;
+            const docRef = doc(db, `users/${userId}/dailyTracking/${todayDate}`);
+            updateDoc(docRef, { [field]: newData });
         }
 
-        // 1. Renderizar Suplementos
-        function renderSupplementTracker() {
-            const savedState = appState.supplements;
-            let checkedDoses = 0;
+        // 2. UI Logic
+        function renderAll() {
+            renderSupplements();
+            renderCream();
+            checkHydration();
+            lucide.createIcons();
+        }
+
+        function renderSupplements() {
+            let count = 0;
+            plan.forEach(item => {
+                const isChecked = appState.supplements[item.id];
+                if (isChecked) count++;
+                const container = document.getElementById(`${item.meal}-list`);
+                // Solo limpiamos si es la primera vez o cambio total, para evitar parpadeo podríamos optimizar, 
+                // pero para este caso simple, limpiamos el contenedor antes de loop externo:
+            });
             
-            // Limpiar contenedores
-            document.getElementById('ayunas-list').innerHTML = '';
-            document.getElementById('desayuno-list').innerHTML = '';
-            document.getElementById('almuerzo-list').innerHTML = '';
-            document.getElementById('cena-list').innerHTML = '';
+            // Limpieza previa
+            ['ayunas', 'desayuno', 'almuerzo', 'cena'].forEach(m => document.getElementById(m+'-list').innerHTML = '');
 
             plan.forEach(item => {
-                const isChecked = savedState[item.id] || false;
-                if (isChecked) checkedDoses++;
-                
-                const mealListId = item.meal + '-list';
-                const container = document.getElementById(mealListId);
-
-                const itemDiv = document.createElement('div');
-                itemDiv.className = `flex items-center justify-between p-3 rounded-xl border border-gray-100 ${isChecked ? 'checked-row' : 'bg-white'}`;
-                itemDiv.setAttribute('data-id', item.id);
-                
-                const content = `
-                    <div class="flex flex-col flex-grow">
-                        <span class="font-medium text-sm text-gray-800">${item.name}</span>
-                        <span class="text-xs text-gray-500 italic">${item.dose}</span>
-                    </div>
-                    <div class="check-box ${isChecked ? 'checked' : ''}" data-id="${item.id}" onclick="window.toggleDose(event, '${item.id}')">
-                        ${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}
-                    </div>
+                const isChecked = appState.supplements[item.id] || false;
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between p-3 rounded-xl border border-gray-100 ${isChecked ? 'checked-row' : 'bg-white'}`;
+                div.innerHTML = `
+                    <div class="flex flex-col"><span class="font-medium text-sm text-gray-800">${item.name}</span><span class="text-xs text-gray-500">${item.dose}</span></div>
+                    <div class="check-box ${isChecked ? 'checked' : ''}" onclick="window.toggleSup('${item.id}')">${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}</div>
                 `;
-                itemDiv.innerHTML = content;
-                container.appendChild(itemDiv);
+                document.getElementById(`${item.meal}-list`).appendChild(div);
             });
-
-            // Actualizar progreso
+            
             const display = document.getElementById('progressDisplay');
-            display.textContent = `${checkedDoses} / ${totalDoses} tomas completadas`;
-
-            if (checkedDoses === totalDoses) {
-                display.classList.remove('bg-gray-100', 'text-gray-700');
-                display.classList.add('bg-green-100', 'text-green-700');
-                display.textContent = `¡Felicidades! Todas las tomas completadas hoy. 🎉`;
-            } else {
-                display.classList.remove('bg-green-100', 'text-green-700');
-                display.classList.add('bg-gray-100', 'text-gray-700');
-            }
-            
-            lucide.createIcons();
+            display.textContent = `${count} / ${plan.length} tomas`;
+            display.className = `text-center p-2 rounded-lg text-lg font-bold ${count === plan.length ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`;
         }
 
-        // 2. Renderizar Crema Corporal
-        function renderCreamTracker() {
-            const savedState = appState.creamState;
-            let checkedCreamDoses = 0;
+        function renderCream() {
             const container = document.getElementById('cream-list');
-            container.innerHTML = ''; 
-
+            container.innerHTML = '';
+            let count = 0;
             creamTimes.forEach(item => {
-                const isChecked = savedState[item.id] || false;
-                if (isChecked) checkedCreamDoses++;
-
-                const itemDiv = document.createElement('div');
-                itemDiv.className = `flex items-center justify-between p-3 rounded-xl border border-gray-100 ${isChecked ? 'checked-row-cream' : 'bg-white'}`;
-                itemDiv.setAttribute('data-id', item.id);
-                
-                const content = `
-                    <div class="flex flex-col flex-grow">
-                        <span class="font-medium text-sm text-gray-800">${item.name}</span>
-                        <span class="text-xs text-gray-500 italic">Aplicar generosamente en abdomen, caderas y muslos.</span>
-                    </div>
-                    <div class="check-box-cream ${isChecked ? 'checked' : ''}" data-id="${item.id}" onclick="window.toggleCreamDose(event, '${item.id}')">
-                        ${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}
-                    </div>
+                const isChecked = appState.creamState[item.id] || false;
+                if (isChecked) count++;
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between p-3 rounded-xl border border-gray-100 ${isChecked ? 'checked-row-cream' : 'bg-white'}`;
+                div.innerHTML = `
+                    <div class="flex flex-col"><span class="font-medium text-sm text-gray-800">${item.name}</span></div>
+                    <div class="check-box-cream ${isChecked ? 'checked' : ''}" onclick="window.toggleCream('${item.id}')">${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}</div>
                 `;
-                itemDiv.innerHTML = content;
-                container.appendChild(itemDiv);
+                container.appendChild(div);
             });
-
-            // Actualizar progreso
-            const display = document.getElementById('creamProgressDisplay');
-            display.textContent = `${checkedCreamDoses} / ${creamTimes.length} aplicaciones completadas`;
-
-            if (checkedCreamDoses === creamTimes.length) {
-                display.classList.remove('bg-gray-100', 'text-gray-700');
-                display.classList.add('bg-pink-100', 'text-pink-700');
-            } else {
-                display.classList.remove('bg-pink-100', 'text-pink-700');
-                display.classList.add('bg-gray-100', 'text-gray-700');
-            }
-
-            lucide.createIcons();
+            document.getElementById('creamProgressDisplay').textContent = `${count} / 3 aplicaciones`;
         }
 
-        // 3. Lógica de Hidratación (Alarmas y UI)
-        function playBeep() {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(520, audioContext.currentTime);
-                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2); 
-
-                oscillator.start();
-                oscillator.stop(audioContext.currentTime + 0.2);
-            } catch (e) {
-                console.warn("No se pudo reproducir el sonido de alarma.");
-            }
-        }
-
-        function getCurrentWaterDoseIndex() {
+        function checkHydration() {
+            const taken = appState.waterState.filter(Boolean).length;
             const now = new Date();
-            const nowMinutes = now.getHours() * 60 + now.getMinutes();
-
-            for (let i = 0; i < waterTimes.length; i++) {
-                const [h, m] = waterTimes[i].split(':').map(Number);
-                const targetMinutes = h * 60 + m;
-
-                if (!appState.waterState[i]) {
-                    if (nowMinutes >= targetMinutes) {
-                        isWaterAlerting = true;
+            const nowMins = now.getHours() * 60 + now.getMinutes();
+            let nextIndex = waterTimes.findIndex((t, i) => {
+                const [h, m] = t.split(':');
+                return (h*60 + +m) > nowMins && !appState.waterState[i];
+            });
+            
+            // Lógica simplificada de alerta
+            const statusDiv = document.getElementById('hydration-status');
+            statusDiv.textContent = `${taken} / 9 tomas`;
+            
+            const btn = document.querySelector('#hydration-action button');
+            const card = document.getElementById('hydration-card');
+            
+            if (taken >= 9) {
+                btn.disabled = true;
+                btn.textContent = "¡Meta cumplida!";
+                card.className = "mb-8 p-4 rounded-xl shadow-md bg-blue-50 border-l-4 border-blue-300";
+                document.getElementById('next-water-time').textContent = "Bien hecho hoy.";
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Marcar Vaso`;
+                // Verificar si vamos tarde
+                let pendingIndex = appState.waterState.indexOf(false);
+                if (pendingIndex !== -1) {
+                    const [h, m] = waterTimes[pendingIndex].split(':');
+                    if (nowMins > (h*60 + +m + 15)) { // 15 min tolerancia
+                        card.className = "mb-8 p-4 rounded-xl shadow-md water-card-alert";
+                        document.getElementById('next-water-time').textContent = `Retraso: Debiste tomar a las ${waterTimes[pendingIndex]}`;
+                    } else {
+                        card.className = "mb-8 p-4 rounded-xl shadow-md water-card-normal";
+                        document.getElementById('next-water-time').textContent = `Siguiente: ${waterTimes[pendingIndex]}`;
                     }
-                    return i;
                 }
             }
-            isWaterAlerting = false;
-            return waterTimes.length; // 9 = completo
         }
 
-        function checkHydrationStatus() {
-            if (!appState) return;
-
-            const now = new Date();
-            const nowHours = now.getHours();
-            const hydrationCard = document.getElementById('hydration-card');
-            const currentDoseIndex = getCurrentWaterDoseIndex();
-            
-            const takenCount = appState.waterState.filter(t => t).length;
-            
-            // Manejo de la finalización de la jornada
-            if (nowHours >= END_TIME_HOUR && currentDoseIndex === waterTimes.length) {
-                document.getElementById('next-water-time').textContent = "✅ ¡Hidratación completa por hoy! (9/9 tomas)";
-                document.querySelector('#hydration-action button').disabled = true;
-                hydrationCard.classList.remove('water-card-alert');
-                hydrationCard.classList.add('water-card-normal');
-                isWaterAlerting = false;
-                updateHydrationUI();
-                return;
-            }
-
-            // Manejo de alarmas
-            if (currentDoseIndex < waterTimes.length) {
-                const targetTimeStr = waterTimes[currentDoseIndex];
-                document.getElementById('next-water-time').textContent = `Próximo vaso (250ml) a las ${targetTimeStr}`;
-
-                if (isWaterAlerting) {
-                    playBeep(); 
-                    hydrationCard.classList.add('water-card-alert');
-                    hydrationCard.classList.remove('water-card-normal');
-                    document.querySelector('#hydration-action button').classList.remove('bg-blue-500', 'hover:bg-blue-600');
-                    document.querySelector('#hydration-action button').classList.add('bg-red-500', 'hover:bg-red-600');
-                } else {
-                    hydrationCard.classList.remove('water-card-alert');
-                    hydrationCard.classList.add('water-card-normal');
-                    document.querySelector('#hydration-action button').classList.remove('bg-red-500', 'hover:bg-red-600');
-                    document.querySelector('#hydration-action button').classList.add('bg-blue-500', 'hover:bg-blue-600');
-                }
-            } else {
-                 document.getElementById('next-water-time').textContent = "✅ ¡Todas las tomas del día completadas!";
-            }
-            
-            updateHydrationUI();
-        }
-
-        function updateHydrationUI() {
-            if (!appState) return;
-            const takenCount = appState.waterState.filter(t => t).length;
-            document.getElementById('hydration-status').textContent = `${takenCount} / ${waterTimes.length} tomas de agua completadas`;
-            
-            const button = document.querySelector('#hydration-action button');
-            if (takenCount === waterTimes.length) {
-                button.disabled = true;
-                button.textContent = "Logro: 9 Vasos de Agua Completados";
-                document.getElementById('hydration-card').classList.remove('water-card-alert');
-                document.getElementById('hydration-card').classList.add('water-card-normal');
-            } else {
-                 button.disabled = false;
-                 button.textContent = "Marcar: 1 Vaso de Agua Tomado";
-            }
-        }
-        
-        // --- EVENT HANDLERS (ACTUALIZAN FIRESTORE) ---
-
-        window.toggleDose = function(event, itemId) {
-            event.preventDefault();
-            if (!appState) return;
-            const newSupplements = {
-                ...appState.supplements,
-                [itemId]: !appState.supplements[itemId],
-            };
-            updateFirestore('supplements', newSupplements);
-        }
-
-        window.toggleCreamDose = function(event, itemId) {
-            event.preventDefault();
-            if (!appState) return;
-            const newCreamState = {
-                ...appState.creamState,
-                [itemId]: !appState.creamState[itemId],
-            };
-            updateFirestore('creamState', newCreamState);
-        }
-
-        window.markWaterTaken = function() {
-            if (!appState) return;
-            const currentDoseIndex = getCurrentWaterDoseIndex();
-            
-            if (currentDoseIndex < waterTimes.length) {
-                const newWaterState = [...appState.waterState];
-                newWaterState[currentDoseIndex] = true;
-                updateFirestore('waterState', newWaterState);
-                isWaterAlerting = false; 
-            }
-        }
-
-        // --- INICIALIZACIÓN ---
-
-        window.onload = () => {
-            initializeFirebase();
-            lucide.createIcons();
+        // Funciones Globales
+        window.toggleSup = (id) => {
+            const newState = { ...appState.supplements, [id]: !appState.supplements[id] };
+            updateDb('supplements', newState);
         };
-    </script>
 
+        window.toggleCream = (id) => {
+            const newState = { ...appState.creamState, [id]: !appState.creamState[id] };
+            updateDb('creamState', newState);
+        };
+
+        window.markWaterTaken = () => {
+            const idx = appState.waterState.indexOf(false);
+            if (idx !== -1) {
+                const newState = [...appState.waterState];
+                newState[idx] = true;
+                updateDb('waterState', newState);
+            }
+        };
+        
+        // Revisar hora cada minuto
+        setInterval(checkHydration, 60000);
+    </script>
 </body>
 </html>
