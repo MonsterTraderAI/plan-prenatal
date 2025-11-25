@@ -3,130 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Plan Prenatal Pro</title>
+    <title>Plan Prenatal Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Chart.js para gráficos bonitos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --color-primary: #52b788; --color-bg: #f8f9fa; }
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--color-bg); padding-bottom: 80px; }
+        :root { --color-primary: #52b788; --color-bg: #f8f9fa; --color-water: #4fc3f7; --color-cream: #ec4899; }
+        body { font-family: 'Inter', system-ui, sans-serif; background-color: var(--color-bg); padding-bottom: 90px; }
         
-        /* Estilos Base */
-        .header-bg { background: linear-gradient(135deg, #52b788 0%, #38a3a5 100%); border-radius: 0 0 40px 40px; }
-        .card { background: white; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); margin-bottom: 20px; padding: 16px; }
+        /* Header y Estilos Base */
+        .header-bg { background: linear-gradient(135deg, #52b788 0%, #38a3a5 100%); border-radius: 0 0 30px 30px; }
+        .card { background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 20px; padding: 16px; border: 1px solid #f0f0f0; }
         
-        /* Checkboxes */
-        .check-box { width: 28px; height: 28px; border: 2px solid #52b788; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer;}
-        .check-box.checked { background: #52b788; color: white; transform: scale(1.05); }
+        /* Checkboxes Personalizados */
+        .check-box { width: 28px; height: 28px; border: 2px solid #52b788; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .check-box.checked { background: #52b788; color: white; transform: scale(1.1); }
         .row-checked { text-decoration: line-through; opacity: 0.6; background-color: #f0fff4; }
-
-        /* Navegación Inferior */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 50; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 0.75rem; background: none; border: none; }
-        .nav-item.active { color: #38a3a5; font-weight: bold; }
-        .nav-item i { margin-bottom: 4px; }
-
-        /* Vistas */
-        .view-section { display: none; animation: fadeIn 0.3s ease; }
-        .view-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Estilos Específicos (Restaurados) */
+        .water-card-alert { background-color: #fee2e2; border-left: 5px solid #ef4444; animation: pulse 2s infinite; }
+        .water-card-normal { background-color: #e3f2fd; border-left: 5px solid var(--color-water); }
+        .cream-card { background-color: #fdf2f8; border-left: 5px solid var(--color-cream); }
+        
+        /* Navegación Inferior (Dashboard) */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); z-index: 50; padding-bottom: max(12px, env(safe-area-inset-bottom)); border-top: 1px solid #eee; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 0.7rem; font-weight: 600; background: none; border: none; width: 50%; }
+        .nav-item.active { color: #38a3a5; }
+        .nav-item.active i { fill: #e6fffa; stroke-width: 2.5px; }
 
         /* Login */
         #login-screen { position: fixed; inset: 0; background: var(--color-bg); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        
+        /* Vistas */
+        .view-section { display: none; }
+        .view-section.active { display: block; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
     </style>
 </head>
 <body>
 
-    <!-- PANTALLA DE LOGIN -->
+    <!-- LOGIN -->
     <div id="login-screen">
         <div class="mb-6 p-6 bg-white rounded-full shadow-lg"><i data-lucide="baby" class="w-16 h-16 text-teal-500"></i></div>
-        <h1 class="text-2xl font-bold mb-2 text-gray-700">Mi Plan Prenatal</h1>
-        <button id="google-login-btn" class="mt-8 flex items-center bg-white border border-gray-300 text-gray-700 font-bold py-3 px-8 rounded-xl shadow hover:bg-gray-50">
+        <h1 class="text-2xl font-bold mb-2 text-gray-700">Plan Prenatal</h1>
+        <p class="text-gray-500 text-sm mb-8">Sincroniza tus datos y guarda tu progreso.</p>
+        <button id="google-login-btn" class="flex items-center bg-white border border-gray-300 text-gray-700 font-bold py-3 px-8 rounded-xl shadow hover:bg-gray-50">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6 mr-3"> Entrar con Google
         </button>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- APP CONTENT -->
     <div id="app-content" style="display:none;">
         
-        <!-- HEADER COMÚN -->
-        <div class="header-bg p-6 pb-10 mb-[-20px] text-white text-center shadow-lg">
+        <!-- HEADER (Fijo arriba) -->
+        <div class="header-bg p-6 pb-8 text-white shadow-lg">
             <div class="flex justify-between items-start">
                 <div>
-                    <h1 class="text-xl font-bold text-left">Hola, <span id="user-name">Mamá</span></h1>
-                    <p class="text-sm opacity-90 text-left" id="current-date-display">Cargando...</p>
+                    <h1 class="text-xl font-bold flex items-center"><i data-lucide="baby" class="w-5 h-5 mr-2"></i> Mi Plan</h1>
+                    <p class="text-xs opacity-80 mt-1">Conectado como <span id="user-name">...</span></p>
                 </div>
-                <button onclick="window.doLogout()" class="text-xs bg-white/20 p-2 rounded-lg hover:bg-white/30"><i data-lucide="log-out" class="w-4 h-4"></i></button>
+                <button onclick="window.doLogout()" class="text-xs bg-white/20 p-2 rounded-lg"><i data-lucide="log-out" class="w-4 h-4"></i></button>
             </div>
         </div>
 
-        <div class="max-w-4xl mx-auto px-4 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 -mt-4 relative z-10">
 
-            <!-- VISTA 1: TRACKER (DIARIO) -->
+            <!-- ========================= -->
+            <!-- VISTA 1: HOY (TRACKER)    -->
+            <!-- ========================= -->
             <div id="view-tracker" class="view-section active">
-                
-                <!-- Resumen Rápido -->
-                <div class="card flex justify-between items-center bg-white/95 backdrop-blur">
-                    <div class="text-center w-1/3 border-r border-gray-100">
-                        <span class="block text-2xl font-bold text-blue-500" id="stat-water">0/9</span>
-                        <span class="text-xs text-gray-400">Agua</span>
-                    </div>
-                    <div class="text-center w-1/3 border-r border-gray-100">
-                        <span class="block text-2xl font-bold text-green-500" id="stat-pills">0%</span>
-                        <span class="text-xs text-gray-400">Pills</span>
-                    </div>
-                    <div class="text-center w-1/3">
-                        <span class="block text-2xl font-bold text-pink-500" id="stat-cream">0/3</span>
-                        <span class="text-xs text-gray-400">Crema</span>
-                    </div>
-                </div>
 
-                <!-- Hidratación -->
-                <div class="card border-l-4 border-blue-400">
-                    <h3 class="font-bold text-blue-800 flex items-center mb-3"><i data-lucide="droplet" class="w-5 h-5 mr-2"></i> Hidratación</h3>
-                    <div class="flex flex-wrap gap-2 justify-center mb-4" id="water-bubbles">
-                        <!-- Bubbles injected by JS -->
+                <!-- 1. HIDRATACIÓN (Con alertas visuales) -->
+                <div id="hydration-card" class="card water-card-normal">
+                    <h2 class="text-lg font-bold mb-2 flex items-center text-blue-700">
+                        <i data-lucide="droplet" class="w-5 h-5 mr-2"></i> Hidratación
+                    </h2>
+                    <div id="hydration-status" class="text-center p-2 rounded-lg text-sm font-bold bg-white/60 text-blue-800 mb-3">
+                        0 / 9 tomas completadas
                     </div>
-                    <button onclick="window.markWaterTaken()" id="water-btn" class="w-full bg-blue-500 text-white font-bold py-3 rounded-xl shadow active:scale-95 transition">
-                        + Agregar Vaso (250ml)
+                    <p id="next-water-text" class="text-xs text-center text-gray-500 mb-3 italic">Próximo vaso: Calculando...</p>
+                    <button onclick="window.markWaterTaken()" id="water-btn" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow flex items-center justify-center bg-blue-500 active:bg-blue-600 transition">
+                        <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Marcar Vaso (250ml)
                     </button>
                 </div>
 
-                <!-- Listas de Suplementos -->
-                <div id="meals-container" class="space-y-4"></div>
-
-                <!-- Crema -->
-                <div class="card border-l-4 border-pink-400 mt-4">
-                    <h3 class="font-bold text-pink-800 flex items-center mb-2"><i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> Piel</h3>
+                <!-- 2. CREMA (Estilo Rosa) -->
+                <div class="card cream-card">
+                    <h2 class="text-lg font-bold mb-2 flex items-center text-pink-700">
+                        <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> Piel (Antiestrías)
+                    </h2>
+                    <p class="text-xs text-gray-500 mb-3 italic">Abdomen, caderas y muslos.</p>
                     <div id="cream-list" class="space-y-2"></div>
                 </div>
 
-                <!-- Ánimo y Notas (NUEVO) -->
-                <div class="card mt-4 border-l-4 border-purple-400">
-                    <h3 class="font-bold text-purple-800 flex items-center mb-2"><i data-lucide="heart-pulse" class="w-5 h-5 mr-2"></i> ¿Cómo te sientes?</h3>
-                    <div class="flex justify-around mb-4">
-                        <button onclick="window.setMood('good')" class="text-3xl hover:scale-125 transition grayscale mood-btn" id="mood-good">😊</button>
-                        <button onclick="window.setMood('meh')" class="text-3xl hover:scale-125 transition grayscale mood-btn" id="mood-meh">😐</button>
-                        <button onclick="window.setMood('bad')" class="text-3xl hover:scale-125 transition grayscale mood-btn" id="mood-bad">🤢</button>
+                <!-- 3. ÁNIMO DEL DÍA (Nueva Funcionalidad) -->
+                <div class="card border-l-4 border-purple-400">
+                    <h3 class="font-bold text-gray-700 text-sm mb-2 flex items-center"><i data-lucide="heart-pulse" class="w-4 h-4 mr-2 text-purple-500"></i> Diario de Síntomas</h3>
+                    <div class="flex justify-around mb-3">
+                        <button onclick="window.setMood('good')" class="text-3xl transition grayscale mood-btn" id="mood-good">😊</button>
+                        <button onclick="window.setMood('meh')" class="text-3xl transition grayscale mood-btn" id="mood-meh">😐</button>
+                        <button onclick="window.setMood('bad')" class="text-3xl transition grayscale mood-btn" id="mood-bad">🤢</button>
                     </div>
-                    <textarea id="daily-notes" placeholder="Algún síntoma o nota para el doc..." class="w-full p-3 border rounded-lg text-sm bg-gray-50 focus:bg-white transition" rows="2" onchange="window.saveNotes(this.value)"></textarea>
+                    <textarea id="daily-notes" placeholder="Nota para el doc (ej: dolor de cabeza)..." class="w-full p-2 border rounded-lg text-xs bg-gray-50" rows="2" onchange="window.saveNotes(this.value)"></textarea>
+                </div>
+
+                <!-- 4. SUPLEMENTOS (Con Instrucciones Detalladas Restauradas) -->
+                <div class="space-y-4 mb-8">
+                    
+                    <!-- AYUNAS -->
+                    <div class="card border-l-4 border-yellow-400">
+                        <h3 class="font-bold text-gray-800 mb-1 flex items-center">🌅 Ayunas</h3>
+                        <p class="text-xs text-gray-500 italic mb-3">Solo con agua. Esperar 30 min para desayunar.</p>
+                        <div id="ayunas-list" class="space-y-2"></div>
+                    </div>
+
+                    <!-- DESAYUNO -->
+                    <div class="card border-l-4 border-orange-400">
+                        <h3 class="font-bold text-gray-800 mb-1 flex items-center">🍳 Desayuno (Carga Principal)</h3>
+                        <p class="text-xs text-gray-500 italic mb-3">Incluir fuente de grasa (huevo, aguacate) para absorción.</p>
+                        <div id="desayuno-list" class="space-y-2"></div>
+                    </div>
+
+                    <!-- ALMUERZO -->
+                    <div class="card border-l-4 border-green-500">
+                        <h3 class="font-bold text-gray-800 mb-1 flex items-center">🥗 Almuerzo</h3>
+                        <p class="text-xs text-gray-500 italic mb-3">Refuerzo de energía y cerebro.</p>
+                        <div id="almuerzo-list" class="space-y-2"></div>
+                    </div>
+
+                    <!-- CENA -->
+                    <div class="card border-l-4 border-indigo-500">
+                        <h3 class="font-bold text-gray-800 mb-1 flex items-center">🌙 Cena</h3>
+                        <p class="text-xs text-gray-500 italic mb-3">Reparación celular nocturna.</p>
+                        <div id="cena-list" class="space-y-2"></div>
+                    </div>
+                </div>
+
+                <!-- 5. RECOMENDACIONES CLAVE (Restauradas) -->
+                <div class="mt-8 p-4 bg-white rounded-xl shadow border-t-4 border-red-400 mb-8">
+                    <h2 class="text-lg font-bold mb-3 flex items-center text-red-600">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i> Importante
+                    </h2>
+                    <ul class="space-y-2 text-xs text-gray-700 list-disc pl-4">
+                        <li><strong class="text-red-700">Vitamina D:</strong> Tomar 1 o 2 gotas. <strong>Omítela</strong> si tomaste sol directo (10am-2pm) por 15 min sin bloqueador. (La caminata de las 5pm no cuenta).</li>
+                        <li><strong class="text-red-700">Hierro:</strong> Se absorbe bien con el Prenatal ya que no consumes lácteos.</li>
+                        <li><strong class="text-red-700">Colina:</strong> Si comes pocos huevos/carne hoy, considera subir a 2 cápsulas (consulta a tu médico).</li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- VISTA 2: DASHBOARD (HISTORIAL) -->
+            <!-- ========================= -->
+            <!-- VISTA 2: DASHBOARD PRO    -->
+            <!-- ========================= -->
             <div id="view-dashboard" class="view-section">
-                <div class="card mt-4">
-                    <h2 class="text-lg font-bold mb-4 text-gray-700">Progreso (Últimos 7 días)</h2>
-                    <div class="relative h-64 w-full">
+                <div class="card mt-2">
+                    <h2 class="text-lg font-bold mb-4 text-gray-700">Tu Progreso Semanal</h2>
+                    <div class="relative h-60 w-full">
                         <canvas id="weeklyChart"></canvas>
                     </div>
+                    <p class="text-xs text-center text-gray-400 mt-2">Comparativa: Suplementos vs. Hidratación</p>
                 </div>
 
                 <div class="card">
-                    <h3 class="font-bold text-gray-700 mb-2">Historial de Síntomas</h3>
-                    <div id="symptom-history" class="space-y-3 text-sm text-gray-600">
-                        <p class="text-center italic text-gray-400">Cargando historial...</p>
+                    <h3 class="font-bold text-gray-700 mb-3 flex items-center"><i data-lucide="history" class="w-4 h-4 mr-2"></i> Historial de Síntomas</h3>
+                    <div id="symptom-history" class="space-y-3">
+                        <p class="text-center text-sm text-gray-400 py-4">Cargando tu historial...</p>
                     </div>
                 </div>
             </div>
@@ -134,24 +176,24 @@
         </div>
     </div>
 
-    <!-- NAVEGACIÓN INFERIOR -->
+    <!-- NAVEGACIÓN INFERIOR (Aquí accedes a las nuevas funciones) -->
     <nav class="bottom-nav" id="bottom-nav" style="display:none;">
         <button class="nav-item active" onclick="switchTab('tracker')">
-            <i data-lucide="check-square" class="w-6 h-6"></i>
-            <span>Hoy</span>
+            <i data-lucide="check-square" class="w-6 h-6 mb-1"></i>
+            <span>Día de Hoy</span>
         </button>
         <button class="nav-item" onclick="switchTab('dashboard')">
-            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
-            <span>Progreso</span>
+            <i data-lucide="bar-chart-2" class="w-6 h-6 mb-1"></i>
+            <span>Estadísticas</span>
         </button>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, updateDoc, serverTimestamp, getDoc, collection, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, updateDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // --- CONFIGURACIÓN FIREBASE ---
+        // --- CONFIGURACIÓN DE FIREBASE ---
         const firebaseConfig = {
           apiKey: "AIzaSyCQ6mZFbPympKrLRPVyrANa-8B6NKWu9t8",
           authDomain: "plan-prenatal-cc.firebaseapp.com",
@@ -159,8 +201,8 @@
           storageBucket: "plan-prenatal-cc.firebasestorage.app",
           messagingSenderId: "1036192129718",
           appId: "1:1036192129718:web:2adacd2e21a9e24a82bc17"
-        };    
-        // -----------------------------
+        };
+        // ----------------------------------------------
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -168,45 +210,43 @@
         
         let userId = null;
         let appState = null;
-        let weeklyChartInstance = null;
+        let chartInstance = null;
         const todayStr = new Date().toISOString().slice(0, 10);
+        const waterTimes = ["08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"];
 
-        // Configuración del Plan
+        // CONFIGURACIÓN DE DATOS (Rica en texto)
         const plan = [
-            { id: 'probiotic', name: 'Probiótico', dose: '1 cap', meal: 'ayunas', fullMeal: '🌅 Ayunas' },
-            { id: 'le_1', name: 'Prenatal', dose: '2 caps', meal: 'desayuno', fullMeal: '🍳 Desayuno' },
-            { id: 'dha_1', name: 'DHA', dose: '1 cap', meal: 'desayuno', fullMeal: '🍳 Desayuno' },
-            { id: 'd3k2', name: 'Vit D3+K2', dose: '1-2 gotas', meal: 'desayuno', fullMeal: '🍳 Desayuno' },
-            { id: 'le_2', name: 'Prenatal', dose: '1 cap', meal: 'almuerzo', fullMeal: '🥗 Almuerzo' },
-            { id: 'choline', name: 'Colina', dose: '1 cap', meal: 'almuerzo', fullMeal: '🥗 Almuerzo' },
-            { id: 'le_3', name: 'Prenatal', dose: '1 cap', meal: 'cena', fullMeal: '🌙 Cena' },
-            { id: 'dha_2', name: 'DHA', dose: '1 cap', meal: 'cena', fullMeal: '🌙 Cena' },
+            { id: 'probiotic', name: 'Probiótico (Garden of Life)', dose: '1 Cápsula', meal: 'ayunas' },
+            { id: 'le_1', name: 'Prenatal (Life Extension)', dose: '2 Cápsulas', meal: 'desayuno' },
+            { id: 'dha_1', name: 'DHA (Nordic Naturals)', dose: '1 Cápsula', meal: 'desayuno' },
+            { id: 'd3k2', name: 'Vitamina D3+K2', dose: '1-2 Gotas (Ver Nota)', meal: 'desayuno' },
+            { id: 'le_2', name: 'Prenatal (Life Extension)', dose: '1 Cápsula', meal: 'almuerzo' },
+            { id: 'choline', name: 'Fosfatidilcolina (Thorne)', dose: '1 Cápsula', meal: 'almuerzo' },
+            { id: 'le_3', name: 'Prenatal (Life Extension)', dose: '1 Cápsula', meal: 'cena' },
+            { id: 'dha_2', name: 'DHA (Nordic Naturals)', dose: '1 Cápsula', meal: 'cena' },
         ];
-        const creamTimes = [{id:'m', name:'Mañana'}, {id:'t', name:'Tarde'}, {id:'n', name:'Noche'}];
+        const creamTimes = [
+            { id: 'm', name: 'Mañana (09:00 AM)' },
+            { id: 't', name: 'Tarde (03:00 PM)' },
+            { id: 'n', name: 'Noche (09:00 PM)' }
+        ];
+
         const INITIAL_DATA = {
-            supplements: {}, 
-            waterState: new Array(9).fill(false), 
-            creamState: {}, 
-            mood: null, 
-            notes: ''
+            supplements: {}, waterState: new Array(9).fill(false), creamState: {}, mood: null, notes: ''
         };
 
         // --- AUTH ---
-        const loginBtn = document.getElementById('google-login-btn');
-        loginBtn.addEventListener('click', () => signInWithPopup(auth, new GoogleAuthProvider()));
+        document.getElementById('google-login-btn').addEventListener('click', () => signInWithPopup(auth, new GoogleAuthProvider()));
         window.doLogout = () => signOut(auth);
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 userId = user.uid;
                 document.getElementById('user-name').textContent = user.displayName?.split(' ')[0] || 'Mamá';
-                document.getElementById('current-date-display').textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
-                
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-content').style.display = 'block';
                 document.getElementById('bottom-nav').style.display = 'flex';
-                
-                initRealtimeListener();
+                initSync();
                 lucide.createIcons();
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
@@ -215,212 +255,194 @@
             }
         });
 
-        // --- REALTIME DATA (HOY) ---
-        function initRealtimeListener() {
-            const docRef = doc(db, `users/${userId}/dailyTracking/${todayStr}`);
-            onSnapshot(docRef, (snap) => {
-                if (snap.exists()) {
-                    appState = snap.data();
-                    // Migración simple si faltan campos nuevos
-                    if(!appState.mood) appState.mood = null;
-                    if(!appState.notes) appState.notes = '';
-                } else {
+        // --- SYNC ---
+        function initSync() {
+            onSnapshot(doc(db, `users/${userId}/dailyTracking/${todayStr}`), (snap) => {
+                if (snap.exists()) appState = snap.data();
+                else {
                     appState = INITIAL_DATA;
-                    setDoc(docRef, { ...INITIAL_DATA, date: todayStr, createdAt: serverTimestamp() });
+                    setDoc(doc(db, `users/${userId}/dailyTracking/${todayStr}`), { ...INITIAL_DATA, createdAt: serverTimestamp() });
                 }
                 renderTracker();
             });
         }
 
-        // --- RENDER TRACKER ---
+        // --- RENDER (VISTA 1) ---
         function renderTracker() {
-            // 1. Stats Top
-            const pillsTotal = plan.length;
-            const pillsTaken = plan.filter(p => appState.supplements[p.id]).length;
-            document.getElementById('stat-pills').textContent = Math.round((pillsTaken/pillsTotal)*100) + '%';
+            // Suplementos (Con lógica de grupos)
+            ['ayunas', 'desayuno', 'almuerzo', 'cena'].forEach(m => document.getElementById(m+'-list').innerHTML = '');
             
-            const waterTaken = appState.waterState.filter(Boolean).length;
-            document.getElementById('stat-water').textContent = `${waterTaken}/9`;
-            
-            const creamTaken = creamTimes.filter(c => appState.creamState[c.id]).length;
-            document.getElementById('stat-cream').textContent = `${creamTaken}/3`;
-
-            // 2. Agua Bubbles
-            const bubblesContainer = document.getElementById('water-bubbles');
-            bubblesContainer.innerHTML = '';
-            appState.waterState.forEach((done, idx) => {
-                const bubble = document.createElement('div');
-                bubble.className = `w-8 h-8 rounded-full border-2 border-blue-300 flex items-center justify-center text-xs font-bold ${done ? 'bg-blue-400 text-white' : 'bg-white text-blue-300'}`;
-                bubble.textContent = idx + 1;
-                bubblesContainer.appendChild(bubble);
+            plan.forEach(item => {
+                const isChecked = appState.supplements && appState.supplements[item.id];
+                const div = document.createElement('div');
+                div.className = `flex justify-between items-center p-3 rounded-lg border ${isChecked ? 'row-checked border-green-100' : 'bg-white border-gray-100'}`;
+                div.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="font-semibold text-sm text-gray-800">${item.name}</span>
+                        <span class="text-xs text-gray-500">${item.dose}</span>
+                    </div>
+                    <div class="check-box ${isChecked ? 'checked' : ''}" onclick="window.toggleSup('${item.id}')">
+                        <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                    </div>
+                `;
+                document.getElementById(`${item.meal}-list`).appendChild(div);
             });
 
-            // 3. Suplementos Agrupados
-            const mealsContainer = document.getElementById('meals-container');
-            mealsContainer.innerHTML = '';
-            const meals = ['ayunas', 'desayuno', 'almuerzo', 'cena'];
-            
-            meals.forEach(mealKey => {
-                const items = plan.filter(p => p.meal === mealKey);
-                if(items.length === 0) return;
-                
-                const card = document.createElement('div');
-                card.className = "card";
-                card.innerHTML = `<h3 class="font-bold text-gray-700 mb-3">${items[0].fullMeal}</h3><div class="space-y-3" id="group-${mealKey}"></div>`;
-                mealsContainer.appendChild(card);
-                
-                const groupDiv = card.querySelector(`#group-${mealKey}`);
-                items.forEach(item => {
-                    const isChecked = appState.supplements[item.id];
-                    const row = document.createElement('div');
-                    row.className = `flex justify-between items-center p-2 rounded-lg ${isChecked ? 'row-checked' : ''}`;
-                    row.innerHTML = `
-                        <div><p class="font-medium text-gray-800">${item.name}</p><p class="text-xs text-gray-500">${item.dose}</p></div>
-                        <div class="check-box ${isChecked ? 'checked' : ''}" onclick="window.toggleSup('${item.id}')"><i data-lucide="check" class="w-4 h-4"></i></div>
-                    `;
-                    groupDiv.appendChild(row);
-                });
-            });
-
-            // 4. Crema
-            const creamDiv = document.getElementById('cream-list');
-            creamDiv.innerHTML = '';
+            // Crema
+            const creamCont = document.getElementById('cream-list');
+            creamCont.innerHTML = '';
             creamTimes.forEach(c => {
-                const isChecked = appState.creamState[c.id];
-                const row = document.createElement('div');
-                row.className = `flex justify-between items-center p-2 rounded-lg ${isChecked ? 'row-checked' : ''}`;
-                row.innerHTML = `<span>${c.name}</span><div class="check-box ${isChecked ? 'checked border-pink-400 bg-pink-400' : 'border-pink-300'}" onclick="window.toggleCream('${c.id}')"><i data-lucide="check" class="w-4 h-4"></i></div>`;
-                creamDiv.appendChild(row);
+                const isChecked = appState.creamState && appState.creamState[c.id];
+                const div = document.createElement('div');
+                div.className = `flex justify-between items-center p-3 rounded-lg border ${isChecked ? 'row-checked border-pink-100' : 'bg-white border-gray-100'}`;
+                div.innerHTML = `
+                    <span class="text-sm font-medium text-gray-700">${c.name}</span>
+                    <div class="check-box ${isChecked ? 'checked bg-pink-500 border-pink-500' : 'border-pink-300'}" onclick="window.toggleCream('${c.id}')">
+                        <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                    </div>
+                `;
+                creamCont.appendChild(div);
             });
 
-            // 5. Mood & Notes
-            document.querySelectorAll('.mood-btn').forEach(b => b.classList.add('grayscale'));
-            if(appState.mood) {
-                document.getElementById(`mood-${appState.mood}`)?.classList.remove('grayscale');
-            }
-            document.getElementById('daily-notes').value = appState.notes || '';
+            // Agua (Lógica Alerta)
+            const taken = (appState.waterState || []).filter(Boolean).length;
+            document.getElementById('hydration-status').textContent = `${taken} / 9 tomas completadas`;
             
+            const now = new Date();
+            const nowMins = now.getHours() * 60 + now.getMinutes();
+            let nextIdx = waterTimes.findIndex((t, i) => {
+                const [h, m] = t.split(':');
+                return (h*60 + +m) > nowMins && !(appState.waterState && appState.waterState[i]);
+            });
+
+            const card = document.getElementById('hydration-card');
+            const btn = document.getElementById('water-btn');
+            const txt = document.getElementById('next-water-text');
+
+            if (taken >= 9) {
+                card.className = "card bg-blue-50 border-l-4 border-blue-400";
+                btn.disabled = true;
+                btn.textContent = "¡Meta Diaria Cumplida!";
+                btn.className = "w-full bg-gray-300 text-white font-bold py-3 px-4 rounded-xl cursor-not-allowed";
+                txt.textContent = "¡Hidratación perfecta hoy!";
+            } else {
+                // Verificar si hay retraso
+                const pendingIdx = (appState.waterState || []).findIndex(x => !x);
+                if (pendingIdx !== -1) {
+                    const [h, m] = waterTimes[pendingIdx].split(':');
+                    if (nowMins > (h*60 + +m + 20)) { // 20 min tolerancia
+                        card.className = "card water-card-alert";
+                        txt.textContent = `⚠️ Retraso: Debiste tomar a las ${waterTimes[pendingIdx]}`;
+                        txt.className = "text-xs text-center text-red-600 font-bold mb-3";
+                    } else {
+                        card.className = "card water-card-normal";
+                        txt.textContent = `Siguiente vaso: ${waterTimes[pendingIdx]}`;
+                        txt.className = "text-xs text-center text-gray-500 mb-3 italic";
+                    }
+                }
+                btn.disabled = false;
+            }
+
+            // Mood
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.add('grayscale'));
+            if(appState.mood) document.getElementById(`mood-${appState.mood}`)?.classList.remove('grayscale');
+            document.getElementById('daily-notes').value = appState.notes || '';
+
             lucide.createIcons();
         }
 
-        // --- DASHBOARD LOGIC ---
+        // --- DASHBOARD (VISTA 2) ---
         async function loadDashboard() {
-            if(!userId) return;
             const labels = [];
             const dataPills = [];
             const dataWater = [];
-            
-            // Generar ultimos 7 dias
-            const dates = [];
+            const histCont = document.getElementById('symptom-history');
+            histCont.innerHTML = '';
+
+            // Ultimos 7 dias
             for(let i=6; i>=0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                dates.push(d.toISOString().slice(0,10));
-                labels.push(d.toLocaleDateString('es-ES', {weekday:'short'}));
-            }
+                const d = new Date(); d.setDate(d.getDate() - i);
+                const iso = d.toISOString().slice(0,10);
+                const dayName = d.toLocaleDateString('es-ES', {weekday:'short'});
+                
+                // Get doc
+                const snap = await getDoc(doc(db, `users/${userId}/dailyTracking/${iso}`));
+                let pPct = 0, wPct = 0;
 
-            const historyContainer = document.getElementById('symptom-history');
-            historyContainer.innerHTML = '';
-
-            // Query Firestore (Parallel fetches)
-            const promises = dates.map(d => getDoc(doc(db, `users/${userId}/dailyTracking/${d}`)));
-            const snapshots = await Promise.all(promises);
-
-            snapshots.forEach((snap, index) => {
                 if(snap.exists()) {
-                    const d = snap.data();
-                    // Calcular % Pills
-                    const taken = plan.filter(p => d.supplements && d.supplements[p.id]).length;
-                    dataPills.push((taken / plan.length) * 100);
-                    
-                    // Calcular % Water
-                    const wTaken = (d.waterState || []).filter(Boolean).length;
-                    dataWater.push((wTaken / 9) * 100);
+                    const data = snap.data();
+                    const pTaken = plan.filter(p => data.supplements && data.supplements[p.id]).length;
+                    pPct = (pTaken/plan.length)*100;
+                    const wTaken = (data.waterState || []).filter(Boolean).length;
+                    wPct = (wTaken/9)*100;
 
-                    // Historial Sintomas
-                    if(d.mood || d.notes) {
-                        const moodMap = {good: '😊', meh: '😐', bad: '🤢'};
-                        const div = document.createElement('div');
-                        div.className = "bg-gray-50 p-3 rounded-lg border-l-4 border-purple-300";
-                        div.innerHTML = `
-                            <div class="flex justify-between text-xs font-bold text-gray-500">
-                                <span>${dates[index]}</span>
-                                <span>${d.mood ? moodMap[d.mood] : ''}</span>
+                    // Lista Historial
+                    if(data.mood || data.notes) {
+                        const moodIcon = {good:'😊', meh:'😐', bad:'🤢'}[data.mood] || '';
+                        histCont.innerHTML += `
+                            <div class="bg-gray-50 p-3 rounded border-l-4 border-purple-300 text-xs">
+                                <div class="flex justify-between font-bold text-gray-600 mb-1">
+                                    <span>${dayName} ${d.getDate()}</span>
+                                    <span class="text-base">${moodIcon}</span>
+                                </div>
+                                <p class="italic text-gray-500">"${data.notes || ''}"</p>
                             </div>
-                            <p class="mt-1 text-gray-700 italic">"${d.notes || 'Sin notas'}"</p>
                         `;
-                        historyContainer.appendChild(div);
                     }
-                } else {
-                    dataPills.push(0);
-                    dataWater.push(0);
                 }
-            });
-
-            if(historyContainer.innerHTML === '') historyContainer.innerHTML = '<p class="text-center text-gray-400">Aún no hay notas registradas.</p>';
-
+                labels.push(dayName);
+                dataPills.push(pPct);
+                dataWater.push(wPct);
+            }
+            if(histCont.innerHTML === '') histCont.innerHTML = '<p class="text-center text-gray-400 text-xs italic">No hay notas registradas esta semana.</p>';
             renderChart(labels, dataPills, dataWater);
         }
 
-        function renderChart(labels, pills, water) {
+        function renderChart(labels, d1, d2) {
             const ctx = document.getElementById('weeklyChart').getContext('2d');
-            if(weeklyChartInstance) weeklyChartInstance.destroy();
-
-            weeklyChartInstance = new Chart(ctx, {
+            if(chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [
-                        { label: 'Suplementos %', data: pills, backgroundColor: '#52b788', borderRadius: 4 },
-                        { label: 'Hidratación %', data: water, backgroundColor: '#4fc3f7', borderRadius: 4 }
+                        { label: 'Suplementos', data: d1, backgroundColor: '#52b788', borderRadius: 4 },
+                        { label: 'Agua', data: d2, backgroundColor: '#4fc3f7', borderRadius: 4 }
                     ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, max: 100 } },
-                    plugins: { legend: { position: 'bottom' } }
-                }
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 100, display: false }, x: { grid: { display: false } } }, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }
             });
         }
 
-        // --- GLOBAL ACTIONS ---
+        // --- ACTIONS ---
         window.switchTab = (tab) => {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
             document.getElementById(`view-${tab}`).classList.add('active');
-            // Encontrar boton activo (simple hack)
-            const btns = document.querySelectorAll('.nav-item');
-            if(tab === 'tracker') btns[0].classList.add('active');
-            else {
-                btns[1].classList.add('active');
-                loadDashboard(); // Cargar datos al cambiar
-            }
+            
+            // Highlight nav item
+            const idx = tab === 'tracker' ? 0 : 1;
+            document.querySelectorAll('.nav-item')[idx].classList.add('active');
+
+            if(tab === 'dashboard') loadDashboard();
         };
 
         window.toggleSup = (id) => updateDb('supplements', { ...appState.supplements, [id]: !appState.supplements[id] });
         window.toggleCream = (id) => updateDb('creamState', { ...appState.creamState, [id]: !appState.creamState[id] });
+        window.setMood = (m) => updateDb('mood', m);
+        let t; window.saveNotes = (v) => { clearTimeout(t); t = setTimeout(()=> updateDb('notes', v), 800); };
+        
         window.markWaterTaken = () => {
-            const idx = appState.waterState.indexOf(false);
+            const idx = (appState.waterState || []).findIndex(x => !x);
             if (idx !== -1) {
-                const ns = [...appState.waterState]; ns[idx] = true;
+                const ns = [...(appState.waterState || [])]; ns[idx] = true;
                 updateDb('waterState', ns);
             }
         };
-        window.setMood = (m) => updateDb('mood', m);
-        
-        // Debounce para notas
-        let timeout;
-        window.saveNotes = (txt) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => updateDb('notes', txt), 1000);
-        }
 
         function updateDb(field, val) {
             if(!userId) return;
-            const ref = doc(db, `users/${userId}/dailyTracking/${todayStr}`);
-            updateDoc(ref, { [field]: val });
+            updateDoc(doc(db, `users/${userId}/dailyTracking/${todayStr}`), { [field]: val });
         }
     </script>
 </body>
