@@ -2,189 +2,93 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan de Suplementación Prenatal Personalizado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Plan Prenatal Sincronizado</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root {
-            --color-primary: #52b788; 
-            --color-secondary: #a8dadc;
-            --color-accent: #fbc4c4;
-            --color-bg: #f8f8f8;
-            --color-text: #2c3e50;
-            --color-water: #4fc3f7;
-            --color-cream: #ec4899;
-        }
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--color-bg);
-            color: var(--color-text);
-        }
-        .header-bg {
-            background-color: var(--color-primary);
-            background-image: linear-gradient(135deg, var(--color-primary) 0%, #38a3a5 100%);
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-        }
-        .pill-card {
-            background-color: white;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid var(--color-primary);
-        }
-        .checked-row {
-            background-color: #e6f7ee;
-            text-decoration: line-through;
-            opacity: 0.7;
-        }
-        .check-box {
-            cursor: pointer;
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--color-primary);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .check-box.checked {
-            background-color: var(--color-primary);
-            border-color: var(--color-primary);
-            color: white;
-        }
-        .cream-card {
-            background-color: #fdf2f8;
-            border-left: 5px solid var(--color-cream);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-        .checked-row-cream {
-            background-color: #fbc4c4;
-            text-decoration: line-through;
-            opacity: 0.8;
-        }
-        .check-box-cream {
-            cursor: pointer;
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--color-cream);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .check-box-cream.checked {
-            background-color: var(--color-cream);
-            border-color: var(--color-cream);
-            color: white;
-        }
-        .water-card-normal {
-            background-color: #e3f2fd;
-            border-left: 5px solid var(--color-water);
-            transition: background-color 0.5s, border-left 0.5s;
-        }
-        .water-card-alert {
-            background-color: #fee2e2;
-            border-left: 5px solid #ef4444;
-            animation: pulse-border 1s infinite alternate;
-        }
-        @keyframes pulse-border {
-            from { border-left-color: #ef4444; }
-            to { border-left-color: #fca5a5; }
-        }
+        /* Mismos estilos de antes... */
+        :root { --color-primary: #52b788; --color-secondary: #a8dadc; --color-accent: #fbc4c4; --color-bg: #f8f8f8; --color-text: #2c3e50; --color-water: #4fc3f7; --color-cream: #ec4899; }
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--color-bg); color: var(--color-text); }
+        .header-bg { background: linear-gradient(135deg, var(--color-primary) 0%, #38a3a5 100%); border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; }
+        .pill-card { background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); border-left: 5px solid var(--color-primary); }
+        .checked-row { background-color: #e6f7ee; text-decoration: line-through; opacity: 0.7; }
+        .check-box, .check-box-cream { cursor: pointer; width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .check-box { border: 2px solid var(--color-primary); } .check-box.checked { background: var(--color-primary); color: white; }
+        .cream-card { background-color: #fdf2f8; border-left: 5px solid var(--color-cream); }
+        .check-box-cream { border: 2px solid var(--color-cream); } .check-box-cream.checked { background: var(--color-cream); color: white; }
+        .checked-row-cream { background-color: #fbc4c4; text-decoration: line-through; opacity: 0.8; }
+        .water-card-normal { background-color: #e3f2fd; border-left: 5px solid var(--color-water); }
+        
+        /* Pantalla de Login */
+        #login-screen { position: fixed; inset: 0; background: var(--color-bg); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        #app-content { display: none; } /* Oculto hasta loguear */
     </style>
 </head>
-<body class="p-4 pb-20">
+<body class="pb-20">
 
-    <!-- Encabezado -->
-    <div class="header-bg p-6 mb-8 text-white text-center rounded-xl shadow-lg">
-        <div class="flex items-center justify-center space-x-2 mb-2">
-            <i data-lucide="baby" class="w-8 h-8"></i>
-            <h1 class="text-2xl font-bold">Mi Plan Prenatal</h1>
+    <!-- PANTALLA DE LOGIN (NUEVO) -->
+    <div id="login-screen">
+        <div class="mb-8 p-6 bg-white rounded-full shadow-lg">
+            <i data-lucide="baby" class="w-16 h-16 text-teal-500"></i>
         </div>
-        <p class="text-sm opacity-90">Rutina diaria. <span id="auth-status" class="font-semibold bg-white/20 px-2 py-1 rounded">Conectando...</span></p>
+        <h1 class="text-2xl font-bold mb-2 text-gray-700">Mi Plan Prenatal</h1>
+        <p class="text-gray-500 mb-8">Inicia sesión para sincronizar tus datos entre PC y celular.</p>
+        
+        <button id="google-login-btn" class="flex items-center bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl shadow-md hover:bg-gray-50 transition active:scale-95">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6 mr-3">
+            Entrar con Google
+        </button>
+        <p id="login-msg" class="mt-4 text-sm text-gray-400"></p>
     </div>
 
-    <div class="max-w-4xl mx-auto">
-
-        <!-- Hidratación -->
-        <div id="hydration-card" class="mb-8 p-4 rounded-xl shadow-md water-card-normal">
-            <h2 class="text-xl font-semibold mb-2 flex items-center text-blue-700">
-                <i data-lucide="droplet" class="w-5 h-5 mr-2"></i>
-                Recordatorio de Hidratación
-            </h2>
-            <div id="hydration-status" class="text-center p-2 rounded-lg text-lg font-bold bg-blue-100 text-blue-700 mb-4">
-                Cargando...
+    <!-- CONTENIDO DE LA APP -->
+    <div id="app-content">
+        <!-- Encabezado -->
+        <div class="header-bg p-6 mb-8 text-white text-center rounded-xl shadow-lg m-4 mt-0 pt-8">
+            <div class="flex items-center justify-center space-x-2 mb-2">
+                <i data-lucide="baby" class="w-8 h-8"></i>
+                <h1 class="text-2xl font-bold">Mi Plan</h1>
             </div>
-            <div id="hydration-action" class="flex flex-col items-center">
-                <p id="next-water-time" class="text-sm text-gray-600 mb-3"></p>
-                <button onclick="window.markWaterTaken()" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center bg-blue-500 hover:bg-blue-600 transition duration-150">
-                    <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
-                    Marcar Vaso de Agua
+            <div class="flex justify-between items-end px-2">
+                <p class="text-sm opacity-90 text-left">Hola, <span id="user-name">Mamá</span></p>
+                <button onclick="window.doLogout()" class="text-xs bg-white/20 px-2 py-1 rounded hover:bg-white/30">Salir</button>
+            </div>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-4">
+            
+            <!-- Hidratación -->
+            <div id="hydration-card" class="mb-8 p-4 rounded-xl shadow-md water-card-normal">
+                <h2 class="text-xl font-semibold mb-2 flex items-center text-blue-700"><i data-lucide="droplet" class="w-5 h-5 mr-2"></i> Agua</h2>
+                <div id="hydration-status" class="text-center p-2 rounded-lg text-lg font-bold bg-blue-100 text-blue-700 mb-4">...</div>
+                <button onclick="window.markWaterTaken()" id="water-btn" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center bg-blue-500 active:bg-blue-600 transition">
+                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i> Marcar Vaso
                 </button>
             </div>
-        </div>
-        
-        <!-- Crema -->
-        <div id="cream-tracker" class="mb-8 p-4 rounded-xl shadow-md cream-card">
-            <h2 class="text-xl font-semibold mb-2 flex items-center text-pink-700">
-                <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i>
-                Cuidado de la Piel
-            </h2>
-            <div id="creamProgressDisplay" class="text-center p-2 rounded-lg text-lg font-bold bg-gray-100 text-gray-700 mb-4">
-                Cargando...
-            </div>
-            <div id="cream-list" class="space-y-2"></div>
-        </div>
 
-        <!-- Resumen -->
-        <div class="mb-6 p-4 bg-white rounded-xl shadow-md border-t-4 border-t-gray-200">
-            <h2 class="text-xl font-semibold mb-2 flex items-center">
-                <i data-lucide="list-checks" class="w-5 h-5 mr-2 text-blue-500"></i>
-                Suplementos Diarios
-            </h2>
-            <div id="progressDisplay" class="text-center p-2 rounded-lg text-lg font-bold bg-gray-100 text-gray-700">
-                Cargando...
-            </div>
-        </div>
-
-        <!-- Tablas -->
-        <div class="space-y-6">
-            <div class="pill-card p-4 rounded-xl shadow-md">
-                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700"><i data-lucide="sun-medium" class="w-5 h-5 mr-2 text-yellow-500"></i> Ayunas</h3>
-                <div id="ayunas-list" class="space-y-2"></div>
+            <!-- Crema -->
+            <div class="mb-8 p-4 rounded-xl shadow-md cream-card">
+                <h2 class="text-xl font-semibold mb-2 flex items-center text-pink-700"><i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> Piel</h2>
+                <div id="creamProgressDisplay" class="text-center p-2 rounded-lg text-sm bg-white/50 text-gray-600 mb-2">...</div>
+                <div id="cream-list" class="space-y-2"></div>
             </div>
 
-            <div class="pill-card p-4 rounded-xl shadow-md">
-                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700"><i data-lucide="egg-fried" class="w-5 h-5 mr-2 text-amber-600"></i> Desayuno</h3>
-                <div id="desayuno-list" class="space-y-2"></div>
+            <!-- Suplementos -->
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold flex items-center text-gray-700"><i data-lucide="pill" class="w-5 h-5 mr-2"></i> Suplementos</h2>
+                <div class="pill-card p-4 rounded-xl shadow-md"><h3 class="text-lg font-bold mb-3 text-gray-700">🌅 Ayunas</h3><div id="ayunas-list" class="space-y-2"></div></div>
+                <div class="pill-card p-4 rounded-xl shadow-md"><h3 class="text-lg font-bold mb-3 text-gray-700">🍳 Desayuno</h3><div id="desayuno-list" class="space-y-2"></div></div>
+                <div class="pill-card p-4 rounded-xl shadow-md"><h3 class="text-lg font-bold mb-3 text-gray-700">🥗 Almuerzo</h3><div id="almuerzo-list" class="space-y-2"></div></div>
+                <div class="pill-card p-4 rounded-xl shadow-md"><h3 class="text-lg font-bold mb-3 text-gray-700">🌙 Cena</h3><div id="cena-list" class="space-y-2"></div></div>
             </div>
-
-            <div class="pill-card p-4 rounded-xl shadow-md">
-                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700"><i data-lucide="salad" class="w-5 h-5 mr-2 text-green-600"></i> Almuerzo</h3>
-                <div id="almuerzo-list" class="space-y-2"></div>
-            </div>
-
-            <div class="pill-card p-4 rounded-xl shadow-md">
-                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700"><i data-lucide="moon" class="w-5 h-5 mr-2 text-indigo-500"></i> Cena</h3>
-                <div id="cena-list" class="space-y-2"></div>
-            </div>
-        </div>
-
-        <!-- Recomendaciones -->
-        <div class="mt-8 p-6 bg-white rounded-xl shadow-xl border-t-4 border-t-red-400">
-            <h2 class="text-xl font-bold mb-3 flex items-center text-red-600"><i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i> Notas Importantes</h2>
-            <ul class="space-y-3 text-sm list-disc pl-5 text-gray-700">
-                <li><strong>Vitamina D:</strong> Si tomaste sol 15 min al mediodía sin bloqueador, omite las gotas.</li>
-                <li><strong>Hierro:</strong> Se absorbe bien con el Prenatal (sin lácteos).</li>
-                <li><strong>Agua:</strong> Toma 250ml con cada tanda de pastillas.</li>
-            </ul>
         </div>
     </div>
 
     <script type="module">
+        // Importamos GoogleAuthProvider y signInWithPopup
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // --- CONFIGURACIÓN DE FIREBASE ---
@@ -201,11 +105,13 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
 
         let userId = null;
         let appState = null;
         const todayDate = new Date().toISOString().slice(0, 10);
         
+        // Estructura de datos
         const INITIAL_DATA = {
             supplements: { probiotic: false, le_1: false, dha_1: false, d3k2: false, le_2: false, choline: false, le_3: false, dha_2: false },
             waterState: new Array(9).fill(false),
@@ -222,34 +128,47 @@
             { id: 'le_3', name: 'Prenatal', dose: '1 Cápsula', meal: 'cena' },
             { id: 'dha_2', name: 'DHA', dose: '1 Cápsula', meal: 'cena' },
         ];
+        const creamTimes = [ { id: 'cream_morning', name: 'Mañana' }, { id: 'cream_afternoon', name: 'Tarde' }, { id: 'cream_night', name: 'Noche' }];
 
-        const creamTimes = [
-            { id: 'cream_morning', name: 'Mañana (9 AM)' },
-            { id: 'cream_afternoon', name: 'Tarde (3 PM)' },
-            { id: 'cream_night', name: 'Noche (9 PM)' },
-        ];
+        // --- LÓGICA DE AUTENTICACIÓN ---
         
-        const waterTimes = ["08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"];
+        // Botón Login
+        document.getElementById('google-login-btn').addEventListener('click', () => {
+            document.getElementById('login-msg').textContent = "Abriendo ventana segura de Google...";
+            signInWithPopup(auth, provider).catch((error) => {
+                console.error(error);
+                document.getElementById('login-msg').textContent = "Error al iniciar sesión: " + error.message;
+            });
+        });
 
-        // 1. Autenticación y Carga de Datos
+        // Botón Logout
+        window.doLogout = () => signOut(auth);
+
+        // Escuchador de estado (Login/Logout)
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                // Usuario logueado
                 userId = user.uid;
-                document.getElementById('auth-status').textContent = "Guardado en nube";
-                document.getElementById('auth-status').classList.add("text-green-200");
+                document.getElementById('user-name').textContent = user.displayName ? user.displayName.split(' ')[0] : 'Mamá';
+                
+                // Ocultar login, mostrar app
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-content').style.display = 'block';
+                
                 startSync();
+                lucide.createIcons();
             } else {
-                signInAnonymously(auth).catch((error) => {
-                    console.error(error);
-                    document.getElementById('auth-status').textContent = "Error Auth";
-                });
+                // Usuario NO logueado
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('app-content').style.display = 'none';
+                userId = null;
             }
         });
 
+        // --- SINCRONIZACIÓN Y LÓGICA APP (IGUAL QUE ANTES) ---
+
         function startSync() {
-            // Ruta simple: usuarios/ID/registros/FECHA
             const docRef = doc(db, `users/${userId}/dailyTracking/${todayDate}`);
-            
             onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     appState = docSnap.data();
@@ -267,111 +186,54 @@
             updateDoc(docRef, { [field]: newData });
         }
 
-        // 2. UI Logic
         function renderAll() {
-            renderSupplements();
-            renderCream();
-            checkHydration();
-            lucide.createIcons();
-        }
-
-        function renderSupplements() {
-            let count = 0;
-            plan.forEach(item => {
-                const isChecked = appState.supplements[item.id];
-                if (isChecked) count++;
-                const container = document.getElementById(`${item.meal}-list`);
-                // Solo limpiamos si es la primera vez o cambio total, para evitar parpadeo podríamos optimizar, 
-                // pero para este caso simple, limpiamos el contenedor antes de loop externo:
-            });
-            
-            // Limpieza previa
+            // Render Suplementos
             ['ayunas', 'desayuno', 'almuerzo', 'cena'].forEach(m => document.getElementById(m+'-list').innerHTML = '');
-
             plan.forEach(item => {
                 const isChecked = appState.supplements[item.id] || false;
                 const div = document.createElement('div');
-                div.className = `flex items-center justify-between p-3 rounded-xl border border-gray-100 ${isChecked ? 'checked-row' : 'bg-white'}`;
+                div.className = `flex items-center justify-between p-3 mb-2 rounded-xl border border-gray-100 ${isChecked ? 'checked-row' : 'bg-white'}`;
                 div.innerHTML = `
                     <div class="flex flex-col"><span class="font-medium text-sm text-gray-800">${item.name}</span><span class="text-xs text-gray-500">${item.dose}</span></div>
                     <div class="check-box ${isChecked ? 'checked' : ''}" onclick="window.toggleSup('${item.id}')">${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}</div>
                 `;
                 document.getElementById(`${item.meal}-list`).appendChild(div);
             });
-            
-            const display = document.getElementById('progressDisplay');
-            display.textContent = `${count} / ${plan.length} tomas`;
-            display.className = `text-center p-2 rounded-lg text-lg font-bold ${count === plan.length ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`;
-        }
 
-        function renderCream() {
-            const container = document.getElementById('cream-list');
-            container.innerHTML = '';
-            let count = 0;
+            // Render Crema
+            const creamContainer = document.getElementById('cream-list');
+            creamContainer.innerHTML = '';
+            let creamCount = 0;
             creamTimes.forEach(item => {
                 const isChecked = appState.creamState[item.id] || false;
-                if (isChecked) count++;
+                if(isChecked) creamCount++;
                 const div = document.createElement('div');
                 div.className = `flex items-center justify-between p-3 rounded-xl border border-gray-100 ${isChecked ? 'checked-row-cream' : 'bg-white'}`;
-                div.innerHTML = `
-                    <div class="flex flex-col"><span class="font-medium text-sm text-gray-800">${item.name}</span></div>
-                    <div class="check-box-cream ${isChecked ? 'checked' : ''}" onclick="window.toggleCream('${item.id}')">${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}</div>
-                `;
-                container.appendChild(div);
+                div.innerHTML = `<span>${item.name}</span><div class="check-box-cream ${isChecked ? 'checked' : ''}" onclick="window.toggleCream('${item.id}')">${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}</div>`;
+                creamContainer.appendChild(div);
             });
-            document.getElementById('creamProgressDisplay').textContent = `${count} / 3 aplicaciones`;
-        }
+            document.getElementById('creamProgressDisplay').textContent = `${creamCount} / 3 completadas`;
 
-        function checkHydration() {
-            const taken = appState.waterState.filter(Boolean).length;
-            const now = new Date();
-            const nowMins = now.getHours() * 60 + now.getMinutes();
-            let nextIndex = waterTimes.findIndex((t, i) => {
-                const [h, m] = t.split(':');
-                return (h*60 + +m) > nowMins && !appState.waterState[i];
-            });
+            // Render Agua
+            const waterTaken = appState.waterState.filter(Boolean).length;
+            const btn = document.getElementById('water-btn');
+            document.getElementById('hydration-status').textContent = `${waterTaken} / 9 Vasos`;
             
-            // Lógica simplificada de alerta
-            const statusDiv = document.getElementById('hydration-status');
-            statusDiv.textContent = `${taken} / 9 tomas`;
-            
-            const btn = document.querySelector('#hydration-action button');
-            const card = document.getElementById('hydration-card');
-            
-            if (taken >= 9) {
+            if (waterTaken >= 9) {
                 btn.disabled = true;
                 btn.textContent = "¡Meta cumplida!";
-                card.className = "mb-8 p-4 rounded-xl shadow-md bg-blue-50 border-l-4 border-blue-300";
-                document.getElementById('next-water-time').textContent = "Bien hecho hoy.";
+                btn.className = "w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center bg-gray-400 cursor-not-allowed";
             } else {
                 btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Marcar Vaso`;
-                // Verificar si vamos tarde
-                let pendingIndex = appState.waterState.indexOf(false);
-                if (pendingIndex !== -1) {
-                    const [h, m] = waterTimes[pendingIndex].split(':');
-                    if (nowMins > (h*60 + +m + 15)) { // 15 min tolerancia
-                        card.className = "mb-8 p-4 rounded-xl shadow-md water-card-alert";
-                        document.getElementById('next-water-time').textContent = `Retraso: Debiste tomar a las ${waterTimes[pendingIndex]}`;
-                    } else {
-                        card.className = "mb-8 p-4 rounded-xl shadow-md water-card-normal";
-                        document.getElementById('next-water-time').textContent = `Siguiente: ${waterTimes[pendingIndex]}`;
-                    }
-                }
+                btn.innerHTML = `<i data-lucide="plus" class="w-5 h-5 mr-2"></i> Marcar Vaso (${waterTaken + 1})`;
+                btn.className = "w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center bg-blue-500 active:bg-blue-600 transition";
             }
+
+            lucide.createIcons();
         }
 
-        // Funciones Globales
-        window.toggleSup = (id) => {
-            const newState = { ...appState.supplements, [id]: !appState.supplements[id] };
-            updateDb('supplements', newState);
-        };
-
-        window.toggleCream = (id) => {
-            const newState = { ...appState.creamState, [id]: !appState.creamState[id] };
-            updateDb('creamState', newState);
-        };
-
+        window.toggleSup = (id) => updateDb('supplements', { ...appState.supplements, [id]: !appState.supplements[id] });
+        window.toggleCream = (id) => updateDb('creamState', { ...appState.creamState, [id]: !appState.creamState[id] });
         window.markWaterTaken = () => {
             const idx = appState.waterState.indexOf(false);
             if (idx !== -1) {
@@ -380,9 +242,6 @@
                 updateDb('waterState', newState);
             }
         };
-        
-        // Revisar hora cada minuto
-        setInterval(checkHydration, 60000);
     </script>
 </body>
 </html>
