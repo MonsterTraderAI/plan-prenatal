@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Suplementación Prenatal Personalizado</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Configuración de la fuente Inter y colores base */
+        :root {
+            --color-primary: #52b788; /* Verde menta suave */
+            --color-secondary: #a8dadc; /* Azul pastel */
+            --color-accent: #fbc4c4; /* Rosa bebé */
+            --color-bg: #f8f8f8; /* Fondo claro */
+            --color-text: #2c3e50; /* Gris oscuro */
+            --color-water: #4fc3f7; /* Azul agua */
+            --color-cream: #ec4899; /* Rosa Malva */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+        .header-bg {
+            background-color: var(--color-primary);
+            background-image: linear-gradient(135deg, var(--color-primary) 0%, #38a3a5 100%);
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+        /* Estilos de las tarjetas de suplementos */
+        .pill-card {
+            background-color: white;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--color-primary);
+        }
+        .checked-row {
+            background-color: #e6f7ee; /* Fondo muy suave cuando está marcado */
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        .check-box {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--color-primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .check-box.checked {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+        }
+
+        /* Estilos de la tarjeta de CREMA (Nueva) */
+        .cream-card {
+            background-color: #fdf2f8; /* Rosa muy claro */
+            border-left: 5px solid var(--color-cream);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .checked-row-cream {
+            background-color: #fbc4c4; /* Rosa suave cuando está marcado */
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+        .check-box-cream {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--color-cream);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .check-box-cream.checked {
+            background-color: var(--color-cream);
+            border-color: var(--color-cream);
+            color: white;
+        }
+        
+        /* Estilos de la tarjeta de AGUA (Alarma) */
+        .water-card-normal {
+            background-color: #e3f2fd; /* Azul suave */
+            border-left: 5px solid var(--color-water);
+            transition: background-color 0.5s, border-left 0.5s;
+        }
+        .water-card-alert {
+            background-color: #fee2e2; /* Rojo suave de alerta */
+            border-left: 5px solid #ef4444; /* Rojo fuerte */
+            animation: pulse-border 1s infinite alternate;
+        }
+        @keyframes pulse-border {
+            from { border-left-color: #ef4444; }
+            to { border-left-color: #fca5a5; }
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <!-- Encabezado Móvil (Banner) -->
+    <div class="header-bg p-6 mb-8 text-white text-center rounded-xl shadow-lg">
+        <div class="flex items-center justify-center space-x-2 mb-2">
+            <i data-lucide="baby" class="w-8 h-8"></i>
+            <h1 class="text-2xl font-bold">Mi Plan Prenatal</h1>
+        </div>
+        <p class="text-sm opacity-90">Rutina diaria optimizada y segura. <span id="auth-status" class="font-semibold">Guardando...</span></p>
+        <p class="text-xs opacity-70 mt-1">ID: <span id="display-user-id">Cargando...</span></p>
+    </div>
+
+    <!-- Contenedor Principal (Tarjetas) -->
+    <div class="max-w-4xl mx-auto">
+
+        <!-- Sección de Hidratación -->
+        <div id="hydration-card" class="mb-8 p-4 rounded-xl shadow-md water-card-normal">
+            <h2 class="text-xl font-semibold mb-2 flex items-center text-blue-700">
+                <i data-lucide="droplet" class="w-5 h-5 mr-2"></i>
+                Recordatorio de Hidratación
+            </h2>
+            
+            <div id="hydration-status" class="text-center p-2 rounded-lg text-lg font-bold bg-blue-100 text-blue-700 mb-4">
+                0 / 9 tomas de agua completadas
+            </div>
+
+            <div id="hydration-action" class="flex flex-col items-center">
+                <p id="next-water-time" class="text-sm text-gray-600 mb-3"></p>
+                <button onclick="markWaterTaken()" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center bg-blue-500 hover:bg-blue-600 transition duration-150">
+                    <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                    Marcar: 1 Vaso de Agua Tomado
+                </button>
+            </div>
+        </div>
+        
+        <!-- Sección de Crema/Aceite Corporal (NUEVA) -->
+        <div id="cream-tracker" class="mb-8 p-4 rounded-xl shadow-md cream-card">
+            <h2 class="text-xl font-semibold mb-2 flex items-center text-pink-700">
+                <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i>
+                Cuidado de la Piel (Aceite/Crema)
+            </h2>
+            <div id="creamProgressDisplay" class="text-center p-2 rounded-lg text-lg font-bold bg-gray-100 text-gray-700 mb-4">
+                0 / 3 aplicaciones completadas
+            </div>
+            <div id="cream-list" class="space-y-2">
+                <!-- Las dosis de crema se inyectan aquí -->
+            </div>
+        </div>
+
+
+        <!-- Sección de Resumen y Contador de Suplementos -->
+        <div class="mb-6 p-4 bg-white rounded-xl shadow-md border-t-4 border-t-gray-200">
+            <h2 class="text-xl font-semibold mb-2 flex items-center">
+                <i data-lucide="list-checks" class="w-5 h-5 mr-2 text-blue-500"></i>
+                Checklist Diario de Suplementos
+            </h2>
+            <p class="text-sm text-gray-600 mb-3">Marca cada suplemento que tomas. Se guarda en la nube y se reinicia automáticamente mañana.</p>
+            <div id="progressDisplay" class="text-center p-2 rounded-lg text-lg font-bold bg-gray-100 text-gray-700">
+                0 / 8 tomas completadas
+            </div>
+        </div>
+
+        <!-- Tabla de Suplementación por Comida -->
+        <div class="space-y-6">
+
+            <!-- BLOQUE 1: Ayunas -->
+            <div class="pill-card p-4 rounded-xl shadow-md" data-meal="Ayunas">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700">
+                    <i data-lucide="sun-medium" class="w-5 h-5 mr-2 text-yellow-500"></i>
+                    🌅 Ayunas (Al despertar)
+                </h3>
+                <p class="text-sm italic text-gray-500 mb-3">Solo con agua para optimizar el paso al intestino.</p>
+                <div id="ayunas-list" class="space-y-2">
+                    <!-- Las pastillas se inyectan aquí -->
+                </div>
+            </div>
+
+            <!-- BLOQUE 2: Desayuno -->
+            <div class="pill-card p-4 rounded-xl shadow-md" data-meal="Desayuno">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700">
+                    <i data-lucide="egg-fried" class="w-5 h-5 mr-2 text-amber-600"></i>
+                    🍳 Desayuno (Carga Principal)
+                </h3>
+                <p class="text-sm italic text-gray-500 mb-3">Asegúrate de incluir una fuente de grasa (aguacate, aceite de oliva, huevo) para una mejor absorción.</p>
+                <div id="desayuno-list" class="space-y-2">
+                    <!-- Las pastillas se inyectan aquí -->
+                </div>
+            </div>
+
+            <!-- BLOQUE 3: Almuerzo -->
+            <div class="pill-card p-4 rounded-xl shadow-md" data-meal="Almuerzo">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700">
+                    <i data-lucide="salad" class="w-5 h-5 mr-2 text-green-600"></i>
+                    🥗 Almuerzo
+                </h3>
+                <p class="text-sm italic text-gray-500 mb-3">Refuerzo a mitad del día para el cerebro y la energía.</p>
+                <div id="almuerzo-list" class="space-y-2">
+                    <!-- Las pastillas se inyectan aquí -->
+                </div>
+            </div>
+
+            <!-- BLOQUE 4: Cena -->
+            <div class="pill-card p-4 rounded-xl shadow-md" data-meal="Cena">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-gray-700">
+                    <i data-lucide="moon" class="w-5 h-5 mr-2 text-indigo-500"></i>
+                    🌙 Cena (Descanso)
+                </h3>
+                <p class="text-sm italic text-gray-500 mb-3">La última toma para la reparación celular durante la noche.</p>
+                <div id="cena-list" class="space-y-2">
+                    <!-- Las pastillas se inyectan aquí -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Recomendaciones Clave -->
+        <div class="mt-8 p-6 bg-white rounded-xl shadow-xl border-t-4 border-t-red-400">
+            <h2 class="text-xl font-bold mb-3 flex items-center text-red-600">
+                <i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i>
+                Recomendaciones Clave
+            </h2>
+            <ul class="space-y-3 text-sm list-disc pl-5">
+                <li><strong class="text-red-700">Vitamina D (El Ajuste):</strong> Tomar solo **1 o 2 gotas** de *Seeking Health D3+K2*. La caminata de las 5pm no produce Vitamina D. Si tomas sol al mediodía (10am-2pm) por 15 minutos sin bloqueador, **omite las gotas ese día**.</li>
+                <li><strong class="text-red-700">Hierro y Calcio:</strong> ¡Excelente noticia! Al no consumir lácteos, tu cuerpo absorberá el Hierro del *Prenatal* de forma óptima. Sigue tomándolo junto con las comidas.</li>
+                <li><strong class="text-red-700">Hidratación:</strong> Toma cada tanda de pastillas con un vaso completo de agua (250ml) para evitar molestias gástricas y mejorar la disolución.</li>
+                <li><strong class="text-red-700">Fosfatidilcolina (Thorne):</strong> La dosis de 1 cápsula es de apoyo. Si tu dieta es baja en huevos o carne, consulta a tu médico sobre subir a 2 cápsulas para asegurar los 450mg de Colina.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Scripts de Lógica JavaScript -->
+    <script type="module">
+        // --- FIREBASE IMPORTS ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, doc, setDoc, onSnapshot, updateDoc, serverTimestamp, setLogLevel 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Habilitar logs para depuración
+        setLogLevel('Debug');
+
+        // --- GLOBAL STATE & CONSTANTS ---
+        let db;
+        let auth;
+        let userId = 'loading'; 
+        let isAuthReady = false;
+        let appState = null; // Estado cargado de Firestore
+        const todayDate = new Date().toISOString().slice(0, 10);
+        const END_TIME_HOUR = 21; // 9 PM
+        let waterIntervalId = null;
+        let isWaterAlerting = false;
+
+        const INITIAL_FIRESTORE_DATA = {
+            supplements: { 
+                probiotic: false, le_1: false, dha_1: false, d3k2: false, 
+                le_2: false, choline: false, le_3: false, dha_2: false 
+            },
+            waterState: new Array(9).fill(false),
+            creamState: { cream_morning: false, cream_afternoon: false, cream_night: false },
+        };
+
+        const plan = [
+            { id: 'probiotic', name: 'Probiótico (Garden of Life)', dose: '1 Cápsula', meal: 'ayunas' },
+            { id: 'le_1', name: 'Prenatal (Life Extension)', dose: '2 Cápsulas', meal: 'desayuno' },
+            { id: 'dha_1', name: 'DHA (Nordic Naturals)', dose: '1 Cápsula', meal: 'desayuno' },
+            { id: 'd3k2', name: 'Vitamina D3+K2 (Seeking Health)', dose: '1 o 2 Gotas', meal: 'desayuno' },
+            { id: 'le_2', name: 'Prenatal (Life Extension)', dose: '1 Cápsula', meal: 'almuerzo' },
+            { id: 'choline', name: 'Fosfatidilcolina (Thorne)', dose: '1 Cápsula', meal: 'almuerzo' },
+            { id: 'le_3', name: 'Prenatal (Life Extension)', dose: '1 Cápsula', meal: 'cena' },
+            { id: 'dha_2', name: 'DHA (Nordic Naturals)', dose: '1 Cápsula', meal: 'cena' },
+        ];
+        const totalDoses = plan.length;
+        
+        const creamTimes = [
+            { id: 'cream_morning', name: 'Mañana (09:00 AM)' },
+            { id: 'cream_afternoon', name: 'Tarde (03:00 PM)' },
+            { id: 'cream_night', name: 'Noche (09:00 PM)' },
+        ];
+        const waterTimes = [
+            "08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"
+        ];
+        
+        // --- FIREBASE CORE FUNCTIONS ---
+
+        async function initializeFirebase() {
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                document.getElementById('auth-status').textContent = 'Conectando...';
+
+                // Usamos onAuthStateChanged para manejar el estado de autenticación
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        document.getElementById('display-user-id').textContent = userId;
+                        document.getElementById('auth-status').textContent = 'Guardado en la Nube';
+                        isAuthReady = true;
+                        startTracking();
+                    } else {
+                         // Si no hay usuario, intenta iniciar sesión
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (e) {
+                            console.error("Error signing in:", e);
+                            document.getElementById('auth-status').textContent = 'Error de Autenticación';
+                            isAuthReady = true; // Permite el flujo sin datos si la auth falla totalmente
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error al inicializar Firebase:", error);
+                document.getElementById('auth-status').textContent = 'Error de Configuración';
+            }
+        }
+
+        function getTrackingDocRef() {
+            if (!db || !userId) return null;
+            // Path: /artifacts/{appId}/users/{userId}/dailyTracking/{todayDate}
+            return doc(db, `artifacts/${__app_id}/users/${userId}/dailyTracking/${todayDate}`);
+        }
+
+        async function updateFirestore(field, newValue) {
+            const docRef = getTrackingDocRef();
+            if (!docRef) {
+                console.error("Referencia de Firestore no disponible.");
+                return;
+            }
+            try {
+                await updateDoc(docRef, {
+                    [field]: newValue,
+                    lastUpdate: serverTimestamp(),
+                });
+            } catch (error) {
+                console.error(`Error al actualizar el campo ${field}:`, error);
+            }
+        }
+
+        // --- DATA LISTENER & INITIAL LOAD ---
+
+        function startTracking() {
+            if (!isAuthReady || !db || !userId) return;
+
+            const docRef = getTrackingDocRef();
+            
+            // Suscripción en tiempo real
+            onSnapshot(docRef, (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const data = docSnapshot.data();
+                    // Usar los datos de Firestore
+                    appState = {
+                        supplements: data.supplements || INITIAL_FIRESTORE_DATA.supplements,
+                        waterState: data.waterState || INITIAL_FIRESTORE_DATA.waterState,
+                        creamState: data.creamState || INITIAL_FIRESTORE_DATA.creamState,
+                    };
+                } else {
+                    // Si el documento no existe (primer día), crearlo
+                    appState = INITIAL_FIRESTORE_DATA;
+                    setDoc(docRef, { 
+                        ...appState,
+                        lastUpdate: serverTimestamp(),
+                        userId: userId 
+                    }).catch(e => console.error("Error al crear el documento inicial:", e));
+                }
+                
+                // Renderizar la UI con los nuevos datos
+                renderAllUI();
+                if (!waterIntervalId) {
+                    // Solo iniciar el intervalo una vez después de la carga inicial
+                    waterIntervalId = setInterval(checkHydrationStatus, 60000); 
+                    checkHydrationStatus(); 
+                }
+
+            }, (error) => {
+                console.error("Error al suscribirse a Firestore:", error);
+                document.getElementById('auth-status').textContent = 'Error de Sincronización';
+            });
+        }
+        
+        // --- RENDERING FUNCTIONS (Llamadas desde onSnapshot) ---
+
+        function renderAllUI() {
+            if (!appState) return;
+
+            renderSupplementTracker();
+            renderCreamTracker();
+            updateHydrationUI(); 
+        }
+
+        // 1. Renderizar Suplementos
+        function renderSupplementTracker() {
+            const savedState = appState.supplements;
+            let checkedDoses = 0;
+            
+            // Limpiar contenedores
+            document.getElementById('ayunas-list').innerHTML = '';
+            document.getElementById('desayuno-list').innerHTML = '';
+            document.getElementById('almuerzo-list').innerHTML = '';
+            document.getElementById('cena-list').innerHTML = '';
+
+            plan.forEach(item => {
+                const isChecked = savedState[item.id] || false;
+                if (isChecked) checkedDoses++;
+                
+                const mealListId = item.meal + '-list';
+                const container = document.getElementById(mealListId);
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `flex items-center justify-between p-3 rounded-xl border border-gray-100 ${isChecked ? 'checked-row' : 'bg-white'}`;
+                itemDiv.setAttribute('data-id', item.id);
+                
+                const content = `
+                    <div class="flex flex-col flex-grow">
+                        <span class="font-medium text-sm text-gray-800">${item.name}</span>
+                        <span class="text-xs text-gray-500 italic">${item.dose}</span>
+                    </div>
+                    <div class="check-box ${isChecked ? 'checked' : ''}" data-id="${item.id}" onclick="window.toggleDose(event, '${item.id}')">
+                        ${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}
+                    </div>
+                `;
+                itemDiv.innerHTML = content;
+                container.appendChild(itemDiv);
+            });
+
+            // Actualizar progreso
+            const display = document.getElementById('progressDisplay');
+            display.textContent = `${checkedDoses} / ${totalDoses} tomas completadas`;
+
+            if (checkedDoses === totalDoses) {
+                display.classList.remove('bg-gray-100', 'text-gray-700');
+                display.classList.add('bg-green-100', 'text-green-700');
+                display.textContent = `¡Felicidades! Todas las tomas completadas hoy. 🎉`;
+            } else {
+                display.classList.remove('bg-green-100', 'text-green-700');
+                display.classList.add('bg-gray-100', 'text-gray-700');
+            }
+            
+            lucide.createIcons();
+        }
+
+        // 2. Renderizar Crema Corporal
+        function renderCreamTracker() {
+            const savedState = appState.creamState;
+            let checkedCreamDoses = 0;
+            const container = document.getElementById('cream-list');
+            container.innerHTML = ''; 
+
+            creamTimes.forEach(item => {
+                const isChecked = savedState[item.id] || false;
+                if (isChecked) checkedCreamDoses++;
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `flex items-center justify-between p-3 rounded-xl border border-gray-100 ${isChecked ? 'checked-row-cream' : 'bg-white'}`;
+                itemDiv.setAttribute('data-id', item.id);
+                
+                const content = `
+                    <div class="flex flex-col flex-grow">
+                        <span class="font-medium text-sm text-gray-800">${item.name}</span>
+                        <span class="text-xs text-gray-500 italic">Aplicar generosamente en abdomen, caderas y muslos.</span>
+                    </div>
+                    <div class="check-box-cream ${isChecked ? 'checked' : ''}" data-id="${item.id}" onclick="window.toggleCreamDose(event, '${item.id}')">
+                        ${isChecked ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}
+                    </div>
+                `;
+                itemDiv.innerHTML = content;
+                container.appendChild(itemDiv);
+            });
+
+            // Actualizar progreso
+            const display = document.getElementById('creamProgressDisplay');
+            display.textContent = `${checkedCreamDoses} / ${creamTimes.length} aplicaciones completadas`;
+
+            if (checkedCreamDoses === creamTimes.length) {
+                display.classList.remove('bg-gray-100', 'text-gray-700');
+                display.classList.add('bg-pink-100', 'text-pink-700');
+            } else {
+                display.classList.remove('bg-pink-100', 'text-pink-700');
+                display.classList.add('bg-gray-100', 'text-gray-700');
+            }
+
+            lucide.createIcons();
+        }
+
+        // 3. Lógica de Hidratación (Alarmas y UI)
+        function playBeep() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(520, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2); 
+
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (e) {
+                console.warn("No se pudo reproducir el sonido de alarma.");
+            }
+        }
+
+        function getCurrentWaterDoseIndex() {
+            const now = new Date();
+            const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+            for (let i = 0; i < waterTimes.length; i++) {
+                const [h, m] = waterTimes[i].split(':').map(Number);
+                const targetMinutes = h * 60 + m;
+
+                if (!appState.waterState[i]) {
+                    if (nowMinutes >= targetMinutes) {
+                        isWaterAlerting = true;
+                    }
+                    return i;
+                }
+            }
+            isWaterAlerting = false;
+            return waterTimes.length; // 9 = completo
+        }
+
+        function checkHydrationStatus() {
+            if (!appState) return;
+
+            const now = new Date();
+            const nowHours = now.getHours();
+            const hydrationCard = document.getElementById('hydration-card');
+            const currentDoseIndex = getCurrentWaterDoseIndex();
+            
+            const takenCount = appState.waterState.filter(t => t).length;
+            
+            // Manejo de la finalización de la jornada
+            if (nowHours >= END_TIME_HOUR && currentDoseIndex === waterTimes.length) {
+                document.getElementById('next-water-time').textContent = "✅ ¡Hidratación completa por hoy! (9/9 tomas)";
+                document.querySelector('#hydration-action button').disabled = true;
+                hydrationCard.classList.remove('water-card-alert');
+                hydrationCard.classList.add('water-card-normal');
+                isWaterAlerting = false;
+                updateHydrationUI();
+                return;
+            }
+
+            // Manejo de alarmas
+            if (currentDoseIndex < waterTimes.length) {
+                const targetTimeStr = waterTimes[currentDoseIndex];
+                document.getElementById('next-water-time').textContent = `Próximo vaso (250ml) a las ${targetTimeStr}`;
+
+                if (isWaterAlerting) {
+                    playBeep(); 
+                    hydrationCard.classList.add('water-card-alert');
+                    hydrationCard.classList.remove('water-card-normal');
+                    document.querySelector('#hydration-action button').classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                    document.querySelector('#hydration-action button').classList.add('bg-red-500', 'hover:bg-red-600');
+                } else {
+                    hydrationCard.classList.remove('water-card-alert');
+                    hydrationCard.classList.add('water-card-normal');
+                    document.querySelector('#hydration-action button').classList.remove('bg-red-500', 'hover:bg-red-600');
+                    document.querySelector('#hydration-action button').classList.add('bg-blue-500', 'hover:bg-blue-600');
+                }
+            } else {
+                 document.getElementById('next-water-time').textContent = "✅ ¡Todas las tomas del día completadas!";
+            }
+            
+            updateHydrationUI();
+        }
+
+        function updateHydrationUI() {
+            if (!appState) return;
+            const takenCount = appState.waterState.filter(t => t).length;
+            document.getElementById('hydration-status').textContent = `${takenCount} / ${waterTimes.length} tomas de agua completadas`;
+            
+            const button = document.querySelector('#hydration-action button');
+            if (takenCount === waterTimes.length) {
+                button.disabled = true;
+                button.textContent = "Logro: 9 Vasos de Agua Completados";
+                document.getElementById('hydration-card').classList.remove('water-card-alert');
+                document.getElementById('hydration-card').classList.add('water-card-normal');
+            } else {
+                 button.disabled = false;
+                 button.textContent = "Marcar: 1 Vaso de Agua Tomado";
+            }
+        }
+        
+        // --- EVENT HANDLERS (ACTUALIZAN FIRESTORE) ---
+
+        window.toggleDose = function(event, itemId) {
+            event.preventDefault();
+            if (!appState) return;
+            const newSupplements = {
+                ...appState.supplements,
+                [itemId]: !appState.supplements[itemId],
+            };
+            updateFirestore('supplements', newSupplements);
+        }
+
+        window.toggleCreamDose = function(event, itemId) {
+            event.preventDefault();
+            if (!appState) return;
+            const newCreamState = {
+                ...appState.creamState,
+                [itemId]: !appState.creamState[itemId],
+            };
+            updateFirestore('creamState', newCreamState);
+        }
+
+        window.markWaterTaken = function() {
+            if (!appState) return;
+            const currentDoseIndex = getCurrentWaterDoseIndex();
+            
+            if (currentDoseIndex < waterTimes.length) {
+                const newWaterState = [...appState.waterState];
+                newWaterState[currentDoseIndex] = true;
+                updateFirestore('waterState', newWaterState);
+                isWaterAlerting = false; 
+            }
+        }
+
+        // --- INICIALIZACIÓN ---
+
+        window.onload = () => {
+            initializeFirebase();
+            lucide.createIcons();
+        };
+    </script>
+
+</body>
+</html>
